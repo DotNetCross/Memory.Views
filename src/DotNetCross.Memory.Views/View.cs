@@ -21,17 +21,18 @@ namespace DotNetCross.Memory.Views
 
         public View(T[] array, int start)
         {
-            if (array == null)
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
-            if (default(T) == null && array.GetType() != typeof(T[]))
-                ThrowHelper.ThrowArrayTypeMismatchException_ArrayTypeMustBeExactMatch(typeof(T));
+            throw new NotImplementedException();
+            //if (array == null)
+            //    ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
+            //if (default(T) == null && array.GetType() != typeof(T[]))
+            //    ThrowHelper.ThrowArrayTypeMismatchException_ArrayTypeMustBeExactMatch(typeof(T));
 
-            int arrayLength = array.Length;
-            if ((uint)start > (uint)arrayLength)
-                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start);
+            //int arrayLength = array.Length;
+            //if ((uint)start > (uint)arrayLength)
+            //    ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start);
 
-            _pinnable = Unsafe.As<Pinnable<T>>(array);
-            _byteOffsetOrPointer = SpanHelpers.PerTypeValues<T>.ArrayAdjustment.Add<T>(start);
+            //_pinnable = Unsafe.As<Pinnable<T>>(array);
+            //_byteOffsetOrPointer = SpanHelpers.PerTypeValues<T>.ArrayAdjustment.Add<T>(start);
         }
 
         // For when from object member
@@ -43,10 +44,11 @@ namespace DotNetCross.Memory.Views
         // https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-7-3
         public ref T GetPinnableReference()
         {
-            if (_pinnable == null)
-                unsafe { return ref Unsafe.AsRef<T>(_byteOffsetOrPointer.ToPointer()); }
-            else
-                return ref Unsafe.AddByteOffset<T>(ref _pinnable.Data, _byteOffsetOrPointer);
+            throw new NotImplementedException();
+            //if (_pinnable == null)
+            //    unsafe { return ref Unsafe.AsRef<T>(_byteOffsetOrPointer.ToPointer()); }
+            //else
+            //    return ref Unsafe.AddByteOffset<T>(ref _pinnable.Data, _byteOffsetOrPointer);
         }
         // Unsafe.AddByteOffset(); // Need version that takes object and UIntPtr
     }
