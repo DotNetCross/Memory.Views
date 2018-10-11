@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,25 +12,27 @@ namespace DotNetCross.Memory.Views.Tests
         [TestMethod]
         public void ObjectMemorySizeTest_()
         {
-            Assert.AreEqual(1, ObjectMemorySize<byte>(1));
-            Assert.AreEqual(2, ObjectMemorySize<short>(2));
-            Assert.AreEqual(4, ObjectMemorySize<int>(3));
-            Assert.AreEqual(8, ObjectMemorySize<long>(4));
-            Assert.AreEqual(10, ObjectMemorySize<string>("abcde"));
+            //Assert.AreEqual(1, ObjectMemorySize<byte>(1));
+            //Assert.AreEqual(2, ObjectMemorySize<short>(2));
+            //Assert.AreEqual(4, ObjectMemorySize<int>(3));
+            //Assert.AreEqual(8, ObjectMemorySize<long>(4));
+            Assert.AreEqual(10, ObjectMemorySize<string>("1234567890123"));
             Assert.AreEqual(7, ObjectMemorySize<byte[]>(new byte[] { 1,2,3,4,5,6,7 }));
         }
+
+        // https://codingsight.com/precise-computation-of-clr-object-size/
 
         // shallow, just the single object itself
         static int ObjectMemorySize<T>(in T obj)
         {
-            if (typeof(T).IsValueType)
+            //if (typeof(T).IsValueType)
+            //{
+            //    return Unsafe.SizeOf<T>();
+            //}
+            //else
             {
-                return Unsafe.SizeOf<T>();
-            }
-            else
-            {
-                //return ObjectSizeFromTypeHandleUnsafe(typeof(T));
-                return TestSize<T>.SizeOf(obj);
+                return ObjectSizeFromTypeHandleMarshal(typeof(T));
+                //return TestSize<T>.SizeOf(obj);
             }
         }
 
@@ -40,6 +43,12 @@ namespace DotNetCross.Memory.Views.Tests
         static unsafe int ObjectSizeFromTypeHandleUnsafe(Type type)
         {
             var typeHandle = type.TypeHandle;
+            for (int i = 0; i < 4; i++)
+            {
+                int s = *(*(int**)&typeHandle + i);
+                Trace.WriteLine(s);
+
+            }
             int size = *(*(int**)&typeHandle + 1);
             return size;
         }
