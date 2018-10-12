@@ -16,22 +16,14 @@ namespace DotNetCross.Memory.Views
         public T Data;
     }
 
-    public readonly struct ArrayViewND<T>
-    {
-        readonly Pinnable<T> _pinnable;
-        readonly UIntPtr _byteOffsetOrPointerToData;
-        readonly UIntPtr _byteOffsetOrPointerToDimensions;
-        readonly int _rank;
-    }
-
     public readonly struct View<T>
     {
         readonly Pinnable<T> _pinnable;
-        readonly UIntPtr _byteOffsetOrPointer;
+        // UIntPtr not supported by CLR Unsafe, use DNX Unsafe
+        readonly IntPtr _byteOffsetOrPointer;
 
-        public View(T[] array, int start)
+        public View(T[] array, int index)
         {
-            throw new NotImplementedException();
             //if (array == null)
             //    ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
             //if (default(T) == null && array.GetType() != typeof(T[]))
@@ -41,8 +33,9 @@ namespace DotNetCross.Memory.Views
             //if ((uint)start > (uint)arrayLength)
             //    ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start);
 
-            //_pinnable = Unsafe.As<Pinnable<T>>(array);
-            //_byteOffsetOrPointer = SpanHelpers.PerTypeValues<T>.ArrayAdjustment.Add<T>(start);
+            _pinnable = Unsafe.As<Pinnable<T>>(array);
+            _byteOffsetOrPointer = SpanHelpers.PerTypeValues<T>
+                .ArrayAdjustment.Add<T>(index);
         }
 
         // For when from object member
@@ -54,15 +47,29 @@ namespace DotNetCross.Memory.Views
         // https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-7-3
         public ref T GetPinnableReference()
         {
-            throw new NotImplementedException();
-            //if (_pinnable == null)
-            //    unsafe { return ref Unsafe.AsRef<T>(_byteOffsetOrPointer.ToPointer()); }
-            //else
-            //    return ref Unsafe.AddByteOffset<T>(ref _pinnable.Data, _byteOffsetOrPointer);
+            if (_pinnable == null)
+                unsafe { return ref Unsafe.AsRef<T>(_byteOffsetOrPointer.ToPointer()); }
+            else
+                return ref Unsafe.AddByteOffset<T>(ref _pinnable.Data, _byteOffsetOrPointer);
         }
         // Unsafe.AddByteOffset(); // Need version that takes object and UIntPtr
     }
 
+    public readonly struct ArrayView1D<T>
+    {
+        readonly Pinnable<T> _pinnable;
+        readonly IntPtr _byteOffsetOrPointer;
+        readonly IntPtr _length;
+    }
+
+
+    public readonly struct ArrayViewND<T>
+    {
+        readonly Pinnable<T> _pinnable;
+        readonly IntPtr _byteOffsetOrPointerToData;
+        readonly IntPtr _byteOffsetOrPointerToElementStrides;
+        readonly int _rank;
+    }
 
 
     // https://github.com/nietras/corefx/blob/63f9e6d1c42d31d5ce6af978a29e518ee43dc811/src/System.Memory/src/System/Span.cs
@@ -74,7 +81,7 @@ namespace DotNetCross.Memory.Views
     // Seems the size of the array is stored as a set of int32s, not want
     // I wanted, wanted intptr.
 
-    
+
     internal static partial class SpanHelpers
     {
         /// <summary>
