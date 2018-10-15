@@ -78,9 +78,9 @@ namespace DotNetCross.Memory.Views
     // https://windowsdebugging.wordpress.com/2012/04/07/memorylayoutofarrays/
     // https://windowsdebugging.wordpress.com/2012/04/24/memorylayoutofarraysx64/
     // https://blogs.msdn.microsoft.com/seteplia/2017/09/12/managed-object-internals-part-3-the-layout-of-a-managed-array-3/
-    // Seems the size of the array is stored as a set of int32s, not want
-    // I wanted, wanted intptr.
-
+    // https://blogs.msdn.microsoft.com/seteplia/2017/09/21/managed-object-internals-part-4-fields-layout/
+    // Part 4 shows how to get the layout using reflection and IL emit!
+    // https://github.com/SergeyTeplyakov/ObjectLayoutInspector
 
     internal static partial class SpanHelpers
     {
