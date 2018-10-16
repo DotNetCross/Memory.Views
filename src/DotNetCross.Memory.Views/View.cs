@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 namespace DotNetCross.Memory.Views
 {
     // inspiration
+    // Fast/Portable Span Factoring PR
+    // https://github.com/dotnet/corefx/pull/26667
     //
     // This class exists solely so that arbitrary objects can be Unsafe-casted to it to get a ref to the start of the user data.
     //
