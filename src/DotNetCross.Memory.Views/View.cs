@@ -18,13 +18,13 @@ namespace DotNetCross.Memory.Views
         public T Data;
     }
 
-    public readonly struct View<T>
+    public readonly struct View0D<T>
     {
         readonly Pinnable<T> _pinnable;
         // UIntPtr not supported by CLR Unsafe, use DNX Unsafe
         readonly IntPtr _byteOffsetOrPointer;
 
-        public View(T[] array, int index)
+        public View0D(T[] array, int index)
         {
             //if (array == null)
             //    ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
@@ -57,7 +57,7 @@ namespace DotNetCross.Memory.Views
         // Unsafe.AddByteOffset(); // Need version that takes object and UIntPtr
     }
 
-    public readonly struct ArrayView1D<T>
+    public readonly struct View1D<T>
     {
         readonly Pinnable<T> _pinnable;
         readonly IntPtr _byteOffsetOrPointer;
@@ -65,7 +65,7 @@ namespace DotNetCross.Memory.Views
     }
 
 
-    public readonly struct ArrayViewND<T>
+    public readonly struct ViewND<T>
     {
         readonly Pinnable<T> _pinnable;
         readonly IntPtr _byteOffsetOrPointerToData;
