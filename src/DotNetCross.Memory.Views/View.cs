@@ -20,8 +20,7 @@ namespace DotNetCross.Memory.Views
 
     public readonly struct View0D<T>
     {
-        readonly Pinnable<T> _pinnable;
-        // UIntPtr not supported by CLR Unsafe, use DNX Unsafe
+        readonly object _objectOrNull;
         readonly IntPtr _byteOffsetOrPointer;
 
         public View0D(T[] array, int index)
@@ -35,10 +34,33 @@ namespace DotNetCross.Memory.Views
             //if ((uint)start > (uint)arrayLength)
             //    ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start);
 
-            _pinnable = Unsafe.As<Pinnable<T>>(array);
-            _byteOffsetOrPointer = SpanHelpers.PerTypeValues<T>
-                .ArrayAdjustment.Add<T>(index);
+            //_pinnable = Unsafe.As<Pinnable<T>>(array);
+            //_byteOffsetOrPointer = SpanHelpers.PerTypeValues<T>
+            //    .ArrayAdjustment.Add<T>(index);
+
+            _objectOrNull = array;
+            _byteOffsetOrPointer = Unsafe.ByteOffset(_objectOrNull, ref array[index]);
         }
+
+        public View0D(object obj, ref T member)
+        {
+            _objectOrNull = obj;
+            _byteOffsetOrPointer = Unsafe.ByteOffset(_objectOrNull, ref member);
+        }
+
+        public View0D(IntPtr pointer)
+        {
+            _objectOrNull = null;
+            _byteOffsetOrPointer = pointer;
+        }
+
+        public unsafe View0D(void* pointer)
+        {
+            _objectOrNull = null;
+            _byteOffsetOrPointer = new IntPtr(pointer);
+        }
+
+        public ref T Element => ref GetPinnableReference();
 
         // For when from object member
         // public View(object obj, ref T memberRef)
@@ -49,12 +71,8 @@ namespace DotNetCross.Memory.Views
         // https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-7-3
         public ref T GetPinnableReference()
         {
-            if (_pinnable == null)
-                unsafe { return ref Unsafe.AsRef<T>(_byteOffsetOrPointer.ToPointer()); }
-            else
-                return ref Unsafe.AddByteOffset<T>(ref _pinnable.Data, _byteOffsetOrPointer);
+            return ref Unsafe.RefAtByteOffset<T>(_objectOrNull, _byteOffsetOrPointer);
         }
-        // Unsafe.AddByteOffset(); // Need version that takes object and UIntPtr
     }
 
     public readonly struct View1D<T>
