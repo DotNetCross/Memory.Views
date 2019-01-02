@@ -9,14 +9,14 @@ namespace DotNetCross.Memory.Views
 
         public View0D(T[] array, int index)
         {
-            //if (array == null)
-            //    ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
-            //if (default(T) == null && array.GetType() != typeof(T[]))
-            //    ThrowHelper.ThrowArrayTypeMismatchException_ArrayTypeMustBeExactMatch(typeof(T));
+            if (array == null)
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
+            if (default(T) == null && array.GetType() != typeof(T[]))
+                ThrowHelper.ThrowArrayTypeMismatchException_ArrayTypeMustBeExactMatch(typeof(T));
 
-            //int arrayLength = array.Length;
-            //if ((uint)start > (uint)arrayLength)
-            //    ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start);
+            int arrayLength = array.Length;
+            if ((uint)index > (uint)arrayLength)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.index);
 
             //_pinnable = Unsafe.As<Pinnable<T>>(array);
             //_byteOffsetOrPointer = SpanHelpers.PerTypeValues<T>

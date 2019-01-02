@@ -94,6 +94,15 @@ namespace DotNetCross.Memory.Views
             return CreateArgumentOutOfRangeException(ExceptionArgument.length);
         }
 
+        internal static void ThrowArrayTypeMismatchException() => throw CreateArrayTypeMismatchException();
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        static ArrayTypeMismatchException CreateArrayTypeMismatchException() =>
+            new ArrayTypeMismatchException();
+
+        internal static void ThrowArrayTypeMismatchException_ArrayTypeMustBeExactMatch(Type type) { throw CreateArrayTypeMismatchException_ArrayTypeMustBeExactMatch(type); }
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static Exception CreateArrayTypeMismatchException_ArrayTypeMustBeExactMatch(Type type) { return new ArrayTypeMismatchException(); }
+
     }
 
     //
@@ -116,6 +125,7 @@ namespace DotNetCross.Memory.Views
         array,
         culture,
         manager,
-        count
+        count,
+        index,
     }
 }
