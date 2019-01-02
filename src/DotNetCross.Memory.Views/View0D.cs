@@ -2,9 +2,6 @@
 
 namespace DotNetCross.Memory.Views
 {
-    // Span API
-    // https://github.com/dotnet/corefx/blob/7a8b3b9e837aefcf60ad52588e773870325fcf45/src/System.Runtime/ref/System.Runtime.cs#L2221
-
     public readonly struct View0D<T>
     {
         readonly object _objectOrNull;
