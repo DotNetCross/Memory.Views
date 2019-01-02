@@ -41,10 +41,10 @@ namespace DotNetCross.Memory.Views
         }
 
         // We cannot return "ref readonly" yet, C# 8?
-        public /*ref readonly*/ T Element => GetPinnableReference();
+        public ref readonly T Element => ref GetPinnableReference();
 
         // We cannot return "ref readonly" yet, C# 8?
-        public ref /*readonly*/ T GetPinnableReference()
+        public ref readonly T GetPinnableReference()
         {
             return ref Unsafe.RefAtByteOffset<T>(_objectOrNull, _byteOffsetOrPointer);
         }
