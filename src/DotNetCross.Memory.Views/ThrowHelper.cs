@@ -99,6 +99,7 @@ namespace DotNetCross.Memory.Views
         static ArrayTypeMismatchException CreateArrayTypeMismatchException() =>
             new ArrayTypeMismatchException();
 
+        // From https://github.com/dotnet/coreclr/issues/19257
         internal static void ThrowArrayTypeMismatchException_ArrayTypeMustBeExactMatch(Type type) { throw CreateArrayTypeMismatchException_ArrayTypeMustBeExactMatch(type); }
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static Exception CreateArrayTypeMismatchException_ArrayTypeMustBeExactMatch(Type type) { return new ArrayTypeMismatchException(); }
