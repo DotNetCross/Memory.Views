@@ -43,6 +43,14 @@ namespace DotNetCross.Memory.Views
             _byteOffsetOrPointer = new IntPtr(pointer);
         }
 
+        /// <summary>
+        /// Create a new read-only view over a portion of a regular managed 
+        /// This is dangerous because it is not checked if <paramref name="objectData"/>
+        /// actually lies within the object <paramref name="obj"/>.
+        /// </summary>
+        /// <exception cref="System.ArgumentNullException">
+        /// Thrown when the specified object is null.
+        /// </exception>
         public static ReadOnlyView0D<T> DangerousCreate(object obj, in T objectData)
         {
             return new ReadOnlyView0D<T>(obj, objectData);
