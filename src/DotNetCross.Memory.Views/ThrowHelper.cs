@@ -128,5 +128,6 @@ namespace DotNetCross.Memory.Views
         manager,
         count,
         index,
+        obj
     }
 }

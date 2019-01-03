@@ -28,6 +28,9 @@ namespace DotNetCross.Memory.Views
 
         public View0D(object obj, ref T member)
         {
+            if (obj == null)
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.obj);
+
             _objectOrNull = obj;
             _byteOffsetOrPointer = Unsafe.ByteOffset(_objectOrNull, ref member);
         }
@@ -50,7 +53,6 @@ namespace DotNetCross.Memory.Views
         // public View(object obj, ref T memberRef)
         // https://stackoverflow.com/questions/1128315/find-size-of-object-instance-in-bytes-in-c-sharp
         // https://github.com/CyberSaving/MemoryUsage/blob/master/Main/Program.cs
-
 
         // https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-7-3
         public ref T GetPinnableReference()

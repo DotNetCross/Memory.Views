@@ -24,6 +24,9 @@ namespace DotNetCross.Memory.Views
 
         public ReadOnlyView0D(object obj, in T member)
         {
+            if (obj == null)
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.obj);
+
             _objectOrNull = obj;
             _byteOffsetOrPointer = Unsafe.ByteOffset(_objectOrNull, ref Unsafe.AsRef<T>(member));
         }
@@ -40,10 +43,8 @@ namespace DotNetCross.Memory.Views
             _byteOffsetOrPointer = new IntPtr(pointer);
         }
 
-        // We cannot return "ref readonly" yet, C# 8?
         public ref readonly T Element => ref GetPinnableReference();
 
-        // We cannot return "ref readonly" yet, C# 8?
         public ref readonly T GetPinnableReference()
         {
             return ref Unsafe.RefAtByteOffset<T>(_objectOrNull, _byteOffsetOrPointer);
