@@ -21,6 +21,13 @@ namespace DotNetCross.Memory.Views
     // Span API
     // https://github.com/dotnet/corefx/blob/7a8b3b9e837aefcf60ad52588e773870325fcf45/src/System.Runtime/ref/System.Runtime.cs#L2221
 
+    // For when from object member
+    // public View(object obj, ref T memberRef)
+    // https://stackoverflow.com/questions/1128315/find-size-of-object-instance-in-bytes-in-c-sharp
+    // https://github.com/CyberSaving/MemoryUsage/blob/master/Main/Program.cs
+
+    // https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-7-3
+
 
     public readonly struct View1D<T>
     {

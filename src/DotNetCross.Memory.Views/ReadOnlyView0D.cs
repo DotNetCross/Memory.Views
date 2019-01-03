@@ -7,7 +7,6 @@ namespace DotNetCross.Memory.Views
         readonly object _objectOrNull;
         readonly IntPtr _byteOffsetOrPointer;
 
-        // TODO: Replace with static methods
         public ReadOnlyView0D(T[] array, int index)
         {
             if (array == null)
@@ -23,14 +22,13 @@ namespace DotNetCross.Memory.Views
             _byteOffsetOrPointer = Unsafe.ByteOffset(_objectOrNull, ref array[index]);
         }
 
-        // TODO: Make internal and create static method DangerousCreate()
-        public ReadOnlyView0D(object obj, in T member)
+        internal ReadOnlyView0D(object obj, in T objectData)
         {
             if (obj == null)
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.obj);
 
             _objectOrNull = obj;
-            _byteOffsetOrPointer = Unsafe.ByteOffset(_objectOrNull, ref Unsafe.AsRef<T>(member));
+            _byteOffsetOrPointer = Unsafe.ByteOffset(_objectOrNull, ref Unsafe.AsRef<T>(objectData));
         }
 
         public ReadOnlyView0D(IntPtr pointer)
@@ -45,7 +43,10 @@ namespace DotNetCross.Memory.Views
             _byteOffsetOrPointer = new IntPtr(pointer);
         }
 
-        // TODO: Revise ctor and create `ReadOnlyView0D` static class instead
+        public static ReadOnlyView0D<T> DangerousCreate(object obj, in T objectData)
+        {
+            return new ReadOnlyView0D<T>(obj, objectData);
+        }
 
         public ref readonly T Element => ref GetPinnableReference();
 

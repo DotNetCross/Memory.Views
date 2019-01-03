@@ -15,10 +15,19 @@ namespace DotNetCross.Memory.Views.Tests
         }
 
         [TestMethod]
-        public void ReadOnlyView0DTest_Ctor_ObjectRef()
+        public void ReadOnlyView0DTest_Ctor_ArrayIndex_Outside_Throws()
+        {
+            var array = new int[] { 17, 18, 19, 20 };
+            var exception = Assert.ThrowsException<IndexOutOfRangeException>(
+                () => new ReadOnlyView0D<int>(array, 4));
+            Assert.IsNotNull(exception);
+        }
+
+        [TestMethod]
+        public void ReadOnlyView0DTest_DangerousCreate_ObjectRef()
         {
             var obj = new TestObject(17, "ABC");
-            var view = new ReadOnlyView0D<int>(obj, obj.ReadOnlyInt);
+            var view = ReadOnlyView0D<int>.DangerousCreate(obj, obj.ReadOnlyInt);
             Assert.AreEqual(17, view.Element);
             obj.Int = 42;
             Assert.AreEqual(42, view.Element);
