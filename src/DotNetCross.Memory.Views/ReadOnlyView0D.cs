@@ -22,15 +22,6 @@ namespace DotNetCross.Memory.Views
             _byteOffsetOrPointer = Unsafe.ByteOffset(_objectOrNull, ref array[index]);
         }
 
-        internal ReadOnlyView0D(object obj, in T objectData)
-        {
-            if (obj == null)
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.obj);
-
-            _objectOrNull = obj;
-            _byteOffsetOrPointer = Unsafe.ByteOffset(_objectOrNull, ref Unsafe.AsRef<T>(objectData));
-        }
-
         public ReadOnlyView0D(IntPtr pointer)
         {
             _objectOrNull = null;
@@ -43,8 +34,17 @@ namespace DotNetCross.Memory.Views
             _byteOffsetOrPointer = new IntPtr(pointer);
         }
 
+        internal ReadOnlyView0D(object obj, in T objectData)
+        {
+            if (obj == null)
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.obj);
+
+            _objectOrNull = obj;
+            _byteOffsetOrPointer = Unsafe.ByteOffset(_objectOrNull, ref Unsafe.AsRef<T>(objectData));
+        }
+
         /// <summary>
-        /// Create a new read-only view over a portion of a regular managed 
+        /// Create a new read-only view over a portion of a regular managed object.
         /// This is dangerous because it is not checked if <paramref name="objectData"/>
         /// actually lies within the object <paramref name="obj"/>.
         /// </summary>
