@@ -2,23 +2,22 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace DotNetCross.Memory.Views.Tests
 {
     // TODO: Move/delete this code, e.g. DotNetCross.Memory.Layout
-    [TestClass]
     public class ObjectMemorySizeTest
     {
-        [TestMethod]
+        [Fact]
         public void ObjectMemorySizeTest_()
         {
-            Assert.AreEqual(1, ObjectMemorySize<byte>(1));
-            Assert.AreEqual(2, ObjectMemorySize<short>(2));
-            Assert.AreEqual(4, ObjectMemorySize<int>(3));
-            Assert.AreEqual(8, ObjectMemorySize<long>(4));
-            //Assert.AreEqual(10, ObjectMemorySize<string>("1234567890123"));
-            //Assert.AreEqual(7, ObjectMemorySize<byte[]>(new byte[] { 1,2,3,4,5,6,7 }));
+            Assert.Equal(1, ObjectMemorySize<byte>(1));
+            Assert.Equal(2, ObjectMemorySize<short>(2));
+            Assert.Equal(4, ObjectMemorySize<int>(3));
+            Assert.Equal(8, ObjectMemorySize<long>(4));
+            //Assert.Equal(10, ObjectMemorySize<string>("1234567890123"));
+            //Assert.Equal(7, ObjectMemorySize<byte[]>(new byte[] { 1,2,3,4,5,6,7 }));
         }
 
         // https://codingsight.com/precise-computation-of-clr-object-size/
