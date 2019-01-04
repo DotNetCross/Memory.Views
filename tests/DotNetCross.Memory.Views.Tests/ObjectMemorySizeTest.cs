@@ -6,18 +6,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DotNetCross.Memory.Views.Tests
 {
+    // TODO: Move/delete this code, e.g. DotNetCross.Memory.Layout
     [TestClass]
     public class ObjectMemorySizeTest
     {
         [TestMethod]
         public void ObjectMemorySizeTest_()
         {
-            //Assert.AreEqual(1, ObjectMemorySize<byte>(1));
-            //Assert.AreEqual(2, ObjectMemorySize<short>(2));
-            //Assert.AreEqual(4, ObjectMemorySize<int>(3));
-            //Assert.AreEqual(8, ObjectMemorySize<long>(4));
-            Assert.AreEqual(10, ObjectMemorySize<string>("1234567890123"));
-            Assert.AreEqual(7, ObjectMemorySize<byte[]>(new byte[] { 1,2,3,4,5,6,7 }));
+            Assert.AreEqual(1, ObjectMemorySize<byte>(1));
+            Assert.AreEqual(2, ObjectMemorySize<short>(2));
+            Assert.AreEqual(4, ObjectMemorySize<int>(3));
+            Assert.AreEqual(8, ObjectMemorySize<long>(4));
+            //Assert.AreEqual(10, ObjectMemorySize<string>("1234567890123"));
+            //Assert.AreEqual(7, ObjectMemorySize<byte[]>(new byte[] { 1,2,3,4,5,6,7 }));
         }
 
         // https://codingsight.com/precise-computation-of-clr-object-size/
@@ -25,11 +26,11 @@ namespace DotNetCross.Memory.Views.Tests
         // shallow, just the single object itself
         static int ObjectMemorySize<T>(in T obj)
         {
-            //if (typeof(T).IsValueType)
-            //{
-            //    return Unsafe.SizeOf<T>();
-            //}
-            //else
+            if (typeof(T).IsValueType)
+            {
+                return Unsafe.SizeOf<T>();
+            }
+            else
             {
                 return ObjectSizeFromTypeHandleMarshal(typeof(T));
                 //return TestSize<T>.SizeOf(obj);

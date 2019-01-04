@@ -104,7 +104,24 @@ namespace DotNetCross.Memory.Views
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static Exception CreateArrayTypeMismatchException_ArrayTypeMustBeExactMatch(Type type) { return new ArrayTypeMismatchException(); }
 
+        // https://github.com/nietras/corefx/blob/63f9e6d1c42d31d5ce6af978a29e518ee43dc811/src/System.Memory/src/System/ThrowHelper.cs
+        internal static void ThrowArgumentException_InvalidTypeWithPointersNotSupported(Type type) { throw CreateArgumentException_InvalidTypeWithPointersNotSupported(type); }
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static Exception CreateArgumentException_InvalidTypeWithPointersNotSupported(Type type)
+        {
+            return new ArgumentException($"Pointers not supported for type '{type}'");//SR.Format(SR.Argument_InvalidTypeWithPointersNotSupported, type));
+        }
+
+        internal static void ThrowIndexOutOfRangeException() { throw CreateIndexOutOfRangeException(); }
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static Exception CreateIndexOutOfRangeException() { return new IndexOutOfRangeException(); }
+
+        internal static void ThrowArgumentException_DestinationTooShort() { throw CreateArgumentException_DestinationTooShort(); }
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static Exception CreateArgumentException_DestinationTooShort()
+        { return new ArgumentException("Destination too short"); }//SR.Argument_DestinationTooShort); }
     }
+
 
     //
     // The convention for this enum is using the argument name as the enum name
