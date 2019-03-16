@@ -17,7 +17,7 @@ namespace System.SpanTests
         //       but then the test may get killed by the OOM killer at the time the memory
         //       is accessed which triggers the full memory allocation.
 
-        [Fact]
+        //[Fact]
         //[OuterLoop]
         //[PlatformSpecific(TestPlatforms.Windows | TestPlatforms.OSX)]
         public static void IndexOverflow()
@@ -70,7 +70,7 @@ namespace System.SpanTests
         //       but then the test may get killed by the OOM killer at the time the memory
         //       is accessed which triggers the full memory allocation.
 
-        [Fact]
+        //[Fact]
         //[OuterLoop()]
         //[PlatformSpecific(TestPlatforms.Windows | TestPlatforms.OSX)]
         public static void SliceStartInt32Overflow()
@@ -114,7 +114,7 @@ namespace System.SpanTests
         //       but then the test may get killed by the OOM killer at the time the memory
         //       is accessed which triggers the full memory allocation.
 
-        [Fact]
+        //[Fact]
         //[OuterLoop()]
         //[PlatformSpecific(TestPlatforms.Windows | TestPlatforms.OSX)]
         public static void ReadOnlySliceStartInt32Overflow()
