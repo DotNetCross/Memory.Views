@@ -143,7 +143,7 @@ namespace DotNetCross.Memory.Views
             private static IntPtr MeasureArrayAdjustment()
             {
                 T[] sampleArray = new T[1];
-                return Unsafe.ByteOffset<T>(ref Unsafe.As<Pinnable<T>>(sampleArray).Data, ref sampleArray[0]);
+                return Unsafe.ByteOffset(sampleArray, ref sampleArray[0]);
             }
         }
     }

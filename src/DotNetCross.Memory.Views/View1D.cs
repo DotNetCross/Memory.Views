@@ -189,8 +189,8 @@ namespace DotNetCross.Memory.Views
                     ThrowHelper.ThrowIndexOutOfRangeException();
 
                 // TODO: Consider using nint via DotNetCross.NativeInts
-                return ref Unsafe.RefAtByteOffset<T>(_objectOrNull, 
-                    _byteOffsetOrPointer.Add<T>(index)); 
+                return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
+                    _byteOffsetOrPointer.Add<T>(index));
             }
         }
 
