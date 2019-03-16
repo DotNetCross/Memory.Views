@@ -120,6 +120,10 @@ namespace DotNetCross.Memory.Views
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static Exception CreateArgumentException_DestinationTooShort()
         { return new ArgumentException("Destination too short"); }//SR.Argument_DestinationTooShort); }
+
+        internal static Span<T> ThrowNotSupportedException_ViewNotSupportedBySpan<T>() { throw CreateNotSupportedExceptin_ViewNotSupportedBySpan(); }
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static Exception CreateNotSupportedExceptin_ViewNotSupportedBySpan() { return new NotSupportedException("View not supported by Span e.g. Span cannot be created for a multi-dimensional array, because Span constructors suck!"); }
     }
 
 

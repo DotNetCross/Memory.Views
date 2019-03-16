@@ -194,6 +194,32 @@ namespace DotNetCross.Memory.Views
             }
         }
 
+#if HASSPAN
+        public unsafe Span<T> AsSpan()
+        {
+            if (_objectOrNull == null)
+            {
+                return new Span<T>(_byteOffsetOrPointer.ToPointer(), _length);
+            }
+            else if (_objectOrNull is T[] array)
+            {
+                // Span ctors are sorely lacking for other than the default stuff
+                // perhaps use reflection/IL emit or similar to construct directly
+                var start = ViewHelper.ArrayIndexOfByteOffset<T>(_byteOffsetOrPointer);
+                return new Span<T>(array, start, _length);
+            }
+            else
+            {
+                // Span ctors are sorely lacking for other than the default stuff
+                // perhaps use reflection/IL emit or similar to construct directly
+                // We cannot create a span via normal ctors for e.g. 
+                // multi -dimensional arrays.
+                // TODO: For now throw exception
+                return ThrowHelper.ThrowNotSupportedException_ViewNotSupportedBySpan<T>();
+            }
+        }
+#endif
+
         /// <summary>
         /// Clears the contents of this view.
         /// </summary>

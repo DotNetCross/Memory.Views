@@ -19,7 +19,7 @@ namespace DotNetCross.Memory.Views
         ///     the behavior is undefined.
         ///
         /// </summary>
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IntPtr Add<T>(this IntPtr start, int index)
         {
             Debug.Assert(start.ToInt64() >= 0);
@@ -38,6 +38,26 @@ namespace DotNetCross.Memory.Views
                     // 64-bit path.
                     ulong byteLength = (ulong)index * (ulong)Unsafe.SizeOf<T>();
                     return (IntPtr)(((byte*)start) + byteLength);
+                }
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int ArrayIndexOfByteOffset<T>(IntPtr byteOffset)
+        {
+            unsafe
+            {
+                if (sizeof(IntPtr) == sizeof(int))
+                {
+                    // 32-bit path.
+                    return ((int)byteOffset - (int)ViewHelper.PerTypeValues<T>.ArrayAdjustment) 
+                        / Unsafe.SizeOf<T>();
+                }
+                else
+                {
+                    // 64-bit path.
+                    return (int)(((long)byteOffset - (long)ViewHelper.PerTypeValues<T>.ArrayAdjustment)
+                        / Unsafe.SizeOf<T>());
                 }
             }
         }

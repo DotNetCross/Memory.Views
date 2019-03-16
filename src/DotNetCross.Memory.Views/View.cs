@@ -41,4 +41,7 @@ namespace DotNetCross.Memory.Views
     // https://blogs.msdn.microsoft.com/seteplia/2017/09/21/managed-object-internals-part-4-fields-layout/
     // Part 4 shows how to get the layout using reflection and IL emit!
     // https://github.com/SergeyTeplyakov/ObjectLayoutInspector
+
+    // Multi-targeting
+    // https://weblog.west-wind.com/posts/2017/jun/22/multitargeting-and-porting-a-net-library-to-net-core-20
 }
