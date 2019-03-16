@@ -5,7 +5,7 @@
 using Xunit;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using DotNetCross.Memory;
+//using DotNetCross.Memory;
 
 namespace System.SpanTests
 {

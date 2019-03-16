@@ -194,7 +194,7 @@ namespace DotNetCross.Memory.Views
             }
         }
 
-#if HASSPAN
+#if true //HASSPAN
         public unsafe Span<T> AsSpan()
         {
             if (_objectOrNull == null)

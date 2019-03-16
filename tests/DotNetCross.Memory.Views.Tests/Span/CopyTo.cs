@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using DotNetCross.Memory;
+//using DotNetCross.Memory;
 using System.Runtime.CompilerServices;
 using Xunit;
 
@@ -236,6 +236,7 @@ namespace System.SpanTests
                         Guid theGuid = Guid.Parse("900DBAD9-00DB-AD90-00DB-AD900DBADBAD");
                         for (int count = 0; count < GuidCount; ++count)
                         {
+
                             Unsafe.Add(ref memoryFirst, count) = theGuid;
                         }
 

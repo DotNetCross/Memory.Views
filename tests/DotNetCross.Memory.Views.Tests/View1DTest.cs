@@ -30,6 +30,20 @@ namespace DotNetCross.Memory.Views.Tests
             Assert.Equal(18, span[0]);
             Assert.Equal(19, span[1]);
         }
+
+        [Fact]
+        public unsafe void View1DTest_AsSpan_Pointer()
+        {
+            var array = new int[] { 17, 18, 19, 20 };
+            fixed (int* ptr = array)
+            {
+                var view = new View1D<int>(ptr + 1, 2);
+                var span = view.AsSpan();
+                Assert.Equal(2, span.Length);
+                Assert.Equal(18, span[0]);
+                Assert.Equal(19, span[1]);
+            }
+        }
 #endif
     }
 }

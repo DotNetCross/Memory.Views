@@ -5,7 +5,7 @@
 using Xunit;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Runtime.CompilerServices;
+//using System.Runtime.CompilerServices;
 
 using static System.Buffers.Binary.BinaryPrimitives;
 using System.Text;
@@ -322,7 +322,7 @@ namespace System
             E4,
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
         public static void DoNotIgnore<T>(T value, int consumed)
         {
         }

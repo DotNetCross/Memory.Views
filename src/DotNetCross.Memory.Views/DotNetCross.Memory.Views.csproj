@@ -13,7 +13,8 @@
 
   <ItemGroup>
     <PackageReference Include="DotNetCross.Memory.Unsafe" Version="0.3.0" />
-    <PackageReference Condition="'$(TargetFramework)' == 'netstandard1.1'" Include="System.Memory" Version="4.5.2" />
+    <PackageReference Condition="'$(TargetFramework)' != 'netcoreapp2.1'" 
+                      Include="System.Memory" Version="4.5.2" />
   </ItemGroup>
 
 </Project>

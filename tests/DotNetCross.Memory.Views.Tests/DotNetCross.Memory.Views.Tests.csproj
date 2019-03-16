@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.0;netcoreapp2.1</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
 
@@ -20,7 +20,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Condition="'$(TargetFramework)' != 'netcoreapp2.1'" Include="System.Memory" Version="4.5.2" />
+    <PackageReference Condition="'$(TargetFramework)' != 'netcoreapp2.1'" 
+                      Include="System.Memory" Version="4.5.2" />
+    <!--TODO: Why do we need to refer to Unsafe package when netcoreapp2.1?-->
+    <PackageReference Condition="'$(TargetFramework)' == 'netcoreapp2.1'"
+                      Include="System.Runtime.CompilerServices.Unsafe" Version="4.*" />
   </ItemGroup>
 
   <ItemGroup>
