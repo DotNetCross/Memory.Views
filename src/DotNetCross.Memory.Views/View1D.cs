@@ -194,9 +194,12 @@ namespace DotNetCross.Memory.Views
             }
         }
 
-#if true //HASSPAN
         public unsafe Span<T> AsSpan()
         {
+#if HASSPAN
+            // Unfortunately only netcoreapp2.1 supports creating spans over any ref
+            return MemoryMarshal.CreateSpan<T>(ref GetPinnableReference(), _length);
+#else
             if (_objectOrNull == null)
             {
                 return new Span<T>(_byteOffsetOrPointer.ToPointer(), _length);
@@ -217,9 +220,9 @@ namespace DotNetCross.Memory.Views
                 // TODO: For now throw exception
                 return ThrowHelper.ThrowNotSupportedException_ViewNotSupportedBySpan<T>();
             }
-        }
 #endif
-
+        }
+    
         /// <summary>
         /// Clears the contents of this view.
         /// </summary>

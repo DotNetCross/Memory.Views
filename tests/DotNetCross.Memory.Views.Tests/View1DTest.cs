@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Xunit;
 
 namespace DotNetCross.Memory.Views.Tests
@@ -19,7 +20,32 @@ namespace DotNetCross.Memory.Views.Tests
             ref int s0 = ref span[0];
         }
 
+        [Fact]
+        public unsafe void View1DTest_Ctor_MultidimensionalArray()
+        {
+            var array = new int[,] { { 17, 18, 19, 20 }, { 21, 22, 23, 24 }, };
+            var view = View1D<int>.DangerousCreate(array, ref array[0, 2], 4);
+            Assert.Equal(4,  view.Length);
+            Assert.Equal(19, view[0]);
+            Assert.Equal(20, view[1]);
+            Assert.Equal(21, view[2]);
+            Assert.Equal(22, view[3]);
+        }
+
 #if HASSPAN
+        [Fact]
+        public unsafe void View1DTest_AsSpan_MultidimensionalArray()
+        {
+            var array = new int[,] { { 17, 18, 19, 20 }, { 21, 22, 23, 24}, };
+            var view = View1D<int>.DangerousCreate(array, ref array[0, 2], 4);
+            var span = view.AsSpan();
+            Assert.Equal(4, span.Length);
+            Assert.Equal(19, span[0]);
+            Assert.Equal(20, span[1]);
+            Assert.Equal(21, span[2]);
+            Assert.Equal(22, span[3]);
+        }
+#endif
         [Fact]
         public void View1DTest_AsSpan_Array()
         {
@@ -44,6 +70,5 @@ namespace DotNetCross.Memory.Views.Tests
                 Assert.Equal(19, span[1]);
             }
         }
-#endif
     }
 }
