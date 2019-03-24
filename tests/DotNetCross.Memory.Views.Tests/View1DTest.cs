@@ -45,6 +45,16 @@ namespace DotNetCross.Memory.Views.Tests
             Assert.Equal(21, span[2]);
             Assert.Equal(22, span[3]);
         }
+#else
+        [Fact]
+        public unsafe void View1DTest_AsSpan_MultidimensionalArray()
+        {
+            var array = new int[,] { { 17, 18, 19, 20 }, { 21, 22, 23, 24}, };
+            var view = View1D<int>.DangerousCreate(array, ref array[0, 2], 4);
+            var e = Assert.Throws<NotSupportedException>(() => { var span = view.AsSpan(); });
+            Assert.Equal("View not supported by Span e.g. Span cannot be created for a multi-dimensional array, because Span constructors suck!", 
+                e.Message);
+        }
 #endif
         [Fact]
         public void View1DTest_AsSpan_Array()
