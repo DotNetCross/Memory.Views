@@ -44,4 +44,8 @@ namespace DotNetCross.Memory.Views
 
     // Multi-targeting
     // https://weblog.west-wind.com/posts/2017/jun/22/multitargeting-and-porting-a-net-library-to-net-core-20
+
+    // T4 => T5
+    // https://github.com/atifaziz/t5
+    // https://notquitepure.info/2018/12/12/T4-Templates-at-Build-Time-With-Dotnet-Core/
 }

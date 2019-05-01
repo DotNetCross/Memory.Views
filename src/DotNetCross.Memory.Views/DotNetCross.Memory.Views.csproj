@@ -17,4 +17,25 @@
                       Include="System.Memory" Version="4.5.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <DotNetCliToolReference Include="T5.TextTransform.Tool" Version="1.1.0-*" />
+    <!--<TextTemplate Include="**\*.Generated.tt"/>
+    <Generated Include="**\*.Generated.cs"/>-->
+  </ItemGroup>
+
+
+  <!--<Target Name="TextTemplateTransform" BeforeTargets="BeforeBuild">
+    <ItemGroup>
+      <Compile Remove="**\*.cs"/>
+    </ItemGroup>
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet tt %(TextTemplate.Identity)"/>
+    <ItemGroup>
+      <Compile Include="**\*.cs"/>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="TextTemplateClean" AfterTargets="Clean">
+    <Delete Files="@(Generated)" />
+  </Target>-->
+  
 </Project>
