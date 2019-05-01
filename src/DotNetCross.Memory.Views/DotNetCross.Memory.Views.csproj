@@ -13,14 +13,32 @@
 
   <ItemGroup>
     <PackageReference Include="DotNetCross.Memory.Unsafe" Version="0.3.0" />
-    <PackageReference Condition="'$(TargetFramework)' != 'netcoreapp2.1'" 
-                      Include="System.Memory" Version="4.5.2" />
+    <PackageReference Condition="'$(TargetFramework)' != 'netcoreapp2.1'" Include="System.Memory" Version="4.5.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="T5.TextTransform.Tool" Version="1.1.0-*" />
+    <!--<DotNetCliToolReference Include="T5.TextTransform.Tool" Version="1.1.0-*" />-->
     <!--<TextTemplate Include="**\*.Generated.tt"/>
     <Generated Include="**\*.Generated.cs"/>-->
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestT4.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TestT4.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="TestT4.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TestT4.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 
