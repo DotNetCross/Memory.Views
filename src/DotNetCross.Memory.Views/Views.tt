@@ -23,6 +23,26 @@ namespace IHFood.Numerics
 #>
     public readonly struct <#= type #>
     {
+        readonly object _objectOrNull;
+        readonly IntPtr _byteOffsetOrPointer;
+<#
+        for (int dim = 0; dim < dims - 1; ++dim)
+        {
+#>
+        readonly IntPtr _byteStride<#= dim #>;
+<#
+        }
+#>
+        // .NET has for good chosen int as size, would have preferred IntPtr e.g. nint
+        // for length but this would give issues with interoperating with BCL
+<#
+        for (int dim = 0; dim < dims; ++dim)
+        {
+#>
+        readonly int _length<#= dim #>;
+<#
+        }
+#>
     }
 <#
     }
