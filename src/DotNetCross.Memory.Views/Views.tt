@@ -20,8 +20,10 @@ namespace IHFood.Numerics
     for (int dims = 1; dims <= MaxFixedDimensions; ++dims)
     {
         string type = classNamePrefix + dims + "D";
+        IReadOnlyList<int> indeces = Enumerable.Range(0, dims).ToArray();
+        string sameDimArray = "T[" + string.Join("", Enumerable.Repeat(",", dims -1 )) + "]";
 #>
-    public readonly struct <#= type #>
+    public readonly struct <#= type #><T>
     {
         readonly object _objectOrNull;
         readonly IntPtr _byteOffsetOrPointer;
@@ -42,7 +44,13 @@ namespace IHFood.Numerics
         readonly int _length<#= dim #>;
 <#
         }
+
 #>
+
+        public <#= type #>(<#= sameDimArray #> array)
+        {
+            
+        }
     }
 <#
     }
