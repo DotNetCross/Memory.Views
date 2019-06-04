@@ -7,12 +7,12 @@ using System.Runtime.InteropServices;
 namespace DotNetCross.Memory.Views
 {
     // Slow Span source
-    // https://github.com/nietras/corefx/blob/63f9e6d1c42d31d5ce6af978a29e518ee43dc811/src/System.Memory/src/System/View1D.cs
+    // https://github.com/nietras/corefx/blob/63f9e6d1c42d31d5ce6af978a29e518ee43dc811/src/System.Memory/src/System/OldView1D.cs
     // Fast Span
     // https://github.com/dotnet/corefx/blob/master/src/Common/src/CoreLib/System/Span.Fast.cs
 
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct View1D<T>
+    public readonly struct OldView1D<T>
     {
         readonly object _objectOrNull;
         readonly IntPtr _byteOffsetOrPointer;
@@ -28,7 +28,7 @@ namespace DotNetCross.Memory.Views
         /// reference (Nothing in Visual Basic).</exception>
         /// <exception cref="System.ArrayTypeMismatchException">Thrown when <paramref name="array"/> is covariant and array's type is not exactly T[].</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public View1D(T[] array)
+        public OldView1D(T[] array)
         {
             if (array == null)
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
@@ -36,7 +36,7 @@ namespace DotNetCross.Memory.Views
                 ThrowHelper.ThrowArrayTypeMismatchException_ArrayTypeMustBeExactMatch(typeof(T));
 
             _objectOrNull = array;
-            _byteOffsetOrPointer = ViewHelper.PerTypeValues<T>.ArrayAdjustment;
+            _byteOffsetOrPointer = ViewHelper.PerTypeValues<T>.ArrayAdjustment1D;
             _length = array.Length;
         }
 
@@ -53,7 +53,7 @@ namespace DotNetCross.Memory.Views
         /// Thrown when the specified <paramref name="start"/> is not in the range (&lt;0 or &gt;=Length).
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public View1D(T[] array, int start)
+        public OldView1D(T[] array, int start)
         {
             if (array == null)
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
@@ -65,7 +65,7 @@ namespace DotNetCross.Memory.Views
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start);
 
             _objectOrNull = array;
-            _byteOffsetOrPointer = ViewHelper.PerTypeValues<T>.ArrayAdjustment.Add<T>(start);
+            _byteOffsetOrPointer = ViewHelper.PerTypeValues<T>.ArrayAdjustment1D.Add<T>(start);
             _length = array.Length - start;
         }
 
@@ -83,7 +83,7 @@ namespace DotNetCross.Memory.Views
         /// Thrown when the specified <paramref name="start"/> or end index is not in the range (&lt;0 or &gt;=Length).
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public View1D(T[] array, int start, int length)
+        public OldView1D(T[] array, int start, int length)
         {
             if (array == null)
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
@@ -94,7 +94,7 @@ namespace DotNetCross.Memory.Views
 
             _length = length;
             _objectOrNull = array;
-            _byteOffsetOrPointer = ViewHelper.PerTypeValues<T>.ArrayAdjustment.Add<T>(start);
+            _byteOffsetOrPointer = ViewHelper.PerTypeValues<T>.ArrayAdjustment1D.Add<T>(start);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace DotNetCross.Memory.Views
         /// Thrown when the specified <paramref name="length"/> is negative.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe View1D(void* pointer, int length)
+        public unsafe OldView1D(void* pointer, int length)
         {
             if (!ViewHelper.IsReferenceFree<T>())
                 ThrowHelper.ThrowArgumentException_InvalidTypeWithPointersNotSupported(typeof(T));
@@ -139,7 +139,7 @@ namespace DotNetCross.Memory.Views
         /// Thrown when the specified <paramref name="length"/> is negative.
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static View1D<T> DangerousCreate(object obj, ref T objectData, int length)
+        public static OldView1D<T> DangerousCreate(object obj, ref T objectData, int length)
         {
             if (obj == null)
                 ThrowHelper.ThrowArgumentNullException(ExceptionArgument.obj);
@@ -147,12 +147,12 @@ namespace DotNetCross.Memory.Views
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length);
 
             IntPtr byteOffset = Unsafe.ByteOffset(obj, ref objectData);
-            return new View1D<T>(obj, byteOffset, length);
+            return new OldView1D<T>(obj, byteOffset, length);
         }
 
         // Constructor for internal use only.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal View1D(object obj, IntPtr byteOffset, int length)
+        internal OldView1D(object obj, IntPtr byteOffset, int length)
         {
             Debug.Assert(length >= 0);
 
@@ -172,7 +172,7 @@ namespace DotNetCross.Memory.Views
         public bool IsEmpty => _length == 0;
 
         /// <summary>
-        /// Returns a reference to specified element of the View1D.
+        /// Returns a reference to specified element of the OldView1D.
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
@@ -333,11 +333,11 @@ namespace DotNetCross.Memory.Views
         ///
         /// <param name="destination">The view to copy items into.</param>
         /// <exception cref="System.ArgumentException">
-        /// Thrown when the destination View1D is shorter than the source View1D.
+        /// Thrown when the destination OldView1D is shorter than the source OldView1D.
         /// </exception>
         /// </summary>
         // TODO: Move to extension method instead
-        public void CopyTo(View1D<T> destination)
+        public void CopyTo(OldView1D<T> destination)
         {
             if (!TryCopyTo(destination))
                 ThrowHelper.ThrowArgumentException_DestinationTooShort();
@@ -353,7 +353,7 @@ namespace DotNetCross.Memory.Views
         /// return false and no data is written to the destination.</returns>
         /// </summary>
         /// <param name="destination">The view to copy items into.</param>
-        public bool TryCopyTo(View1D<T> destination)
+        public bool TryCopyTo(OldView1D<T> destination)
         {
             if ((uint)_length > (uint)destination._length)
                 return false;
@@ -392,7 +392,7 @@ namespace DotNetCross.Memory.Views
         /// Returns true if left and right point at the same memory and have the same length.  Note that
         /// this does *not* check to see if the *contents* are equal.
         /// </summary>
-        public static bool operator ==(View1D<T> left, View1D<T> right)
+        public static bool operator ==(OldView1D<T> left, OldView1D<T> right)
         {
             return left._length == right._length && Unsafe.AreSame<T>(ref left.GetPinnableReference(), ref right.GetPinnableReference());
         }
@@ -401,7 +401,7 @@ namespace DotNetCross.Memory.Views
         /// Returns false if left and right point at the same memory and have the same length.  Note that
         /// this does *not* check to see if the *contents* are equal.
         /// </summary>
-        public static bool operator !=(View1D<T> left, View1D<T> right) => !(left == right);
+        public static bool operator !=(OldView1D<T> left, OldView1D<T> right) => !(left == right);
 
         // TODO: We need to re-enable this scenario since we can use
         //       this in boxed scenarios
@@ -412,7 +412,7 @@ namespace DotNetCross.Memory.Views
         /// Always thrown by this method.
         /// </exception>
         /// </summary>
-        [Obsolete("Equals() on View1D will always throw an exception. Use == instead.")]
+        [Obsolete("Equals() on OldView1D will always throw an exception. Use == instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override bool Equals(object obj)
         {
@@ -425,7 +425,7 @@ namespace DotNetCross.Memory.Views
         /// Always thrown by this method.
         /// </exception>
         /// </summary>
-        [Obsolete("GetHashCode() on View1D will always throw an exception.")]
+        [Obsolete("GetHashCode() on OldView1D will always throw an exception.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override int GetHashCode()
         {
@@ -434,19 +434,19 @@ namespace DotNetCross.Memory.Views
 #pragma warning restore 0809
 
         /// <summary>
-        /// Defines an implicit conversion of an array to a <see cref="View1D{T}"/>
+        /// Defines an implicit conversion of an array to a <see cref="OldView1D{T}"/>
         /// </summary>
-        public static implicit operator View1D<T>(T[] array) => new View1D<T>(array);
+        public static implicit operator OldView1D<T>(T[] array) => new OldView1D<T>(array);
 
         /// <summary>
-        /// Defines an implicit conversion of a <see cref="ArraySegment{T}"/> to a <see cref="View1D{T}"/>
+        /// Defines an implicit conversion of a <see cref="ArraySegment{T}"/> to a <see cref="OldView1D{T}"/>
         /// </summary>
-        public static implicit operator View1D<T>(ArraySegment<T> arraySegment) => new View1D<T>(arraySegment.Array, arraySegment.Offset, arraySegment.Count);
+        public static implicit operator OldView1D<T>(ArraySegment<T> arraySegment) => new OldView1D<T>(arraySegment.Array, arraySegment.Offset, arraySegment.Count);
 
         /// <summary>
-        /// Defines an implicit conversion of a <see cref="View1D{T}"/> to a <see cref="ReadOnlyView1D{T}"/>
+        /// Defines an implicit conversion of a <see cref="OldView1D{T}"/> to a <see cref="ReadOnlyView1D{T}"/>
         /// </summary>
-        //public static implicit operator ReadOnlyView1D<T>(View1D<T> view) => new ReadOnlyView1D<T>(view._objectOrNull, view._byteOffsetOrPointer, view._length);
+        //public static implicit operator ReadOnlyView1D<T>(OldView1D<T> view) => new ReadOnlyView1D<T>(view._objectOrNull, view._byteOffsetOrPointer, view._length);
 
         /// <summary>
         /// Forms a slice out of the given view, beginning at 'start'.
@@ -456,14 +456,14 @@ namespace DotNetCross.Memory.Views
         /// Thrown when the specified <paramref name="start"/> index is not in range (&lt;0 or &gt;=Length).
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public View1D<T> Slice(int start)
+        public OldView1D<T> Slice(int start)
         {
             if ((uint)start > (uint)_length)
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start);
 
             IntPtr newOffset = _byteOffsetOrPointer.Add<T>(start);
             int length = _length - start;
-            return new View1D<T>(_objectOrNull, newOffset, length);
+            return new OldView1D<T>(_objectOrNull, newOffset, length);
         }
 
         /// <summary>
@@ -475,13 +475,13 @@ namespace DotNetCross.Memory.Views
         /// Thrown when the specified <paramref name="start"/> or end index is not in range (&lt;0 or &gt;=Length).
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public View1D<T> Slice(int start, int length)
+        public OldView1D<T> Slice(int start, int length)
         {
             if ((uint)start > (uint)_length || (uint)length > (uint)(_length - start))
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start);
 
             IntPtr newOffset = _byteOffsetOrPointer.Add<T>(start);
-            return new View1D<T>(_objectOrNull, newOffset, length);
+            return new OldView1D<T>(_objectOrNull, newOffset, length);
         }
 
         /// <summary>
@@ -503,10 +503,10 @@ namespace DotNetCross.Memory.Views
         /// <summary>
         /// Returns a 0-length view whose base is the null pointer.
         /// </summary>
-        public static View1D<T> Empty => default;
+        public static OldView1D<T> Empty => default;
 
         /// <summary>
-        /// Returns a reference to the 0th element of the View1D. If the View1D is empty, returns a reference to the location where the 0th element
+        /// Returns a reference to the 0th element of the OldView1D. If the OldView1D is empty, returns a reference to the location where the 0th element
         /// would have been stored. Such a reference can be used for pinning but must never be dereferenced.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -43,6 +43,27 @@ namespace DotNetCross.Memory.Views
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IntPtr Multiply(this IntPtr start, int multiplier)
+        {
+            Debug.Assert(start.ToInt64() >= 0);
+            Debug.Assert(multiplier >= 0);
+
+            unsafe
+            {
+                if (sizeof(IntPtr) == sizeof(int))
+                {
+                    // 32-bit path.
+                    return (IntPtr)((uint)start * (uint)multiplier);
+                }
+                else
+                {
+                    // 64-bit path.
+                    return (IntPtr)((ulong)start * (ulong)multiplier);
+                }
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int ArrayIndexOfByteOffset<T>(IntPtr byteOffset)
         {
             unsafe
@@ -50,13 +71,13 @@ namespace DotNetCross.Memory.Views
                 if (sizeof(IntPtr) == sizeof(int))
                 {
                     // 32-bit path.
-                    return ((int)byteOffset - (int)ViewHelper.PerTypeValues<T>.ArrayAdjustment) 
+                    return ((int)byteOffset - (int)ViewHelper.PerTypeValues<T>.ArrayAdjustment1D) 
                         / Unsafe.SizeOf<T>();
                 }
                 else
                 {
                     // 64-bit path.
-                    return (int)(((long)byteOffset - (long)ViewHelper.PerTypeValues<T>.ArrayAdjustment)
+                    return (int)(((long)byteOffset - (long)ViewHelper.PerTypeValues<T>.ArrayAdjustment1D)
                         / Unsafe.SizeOf<T>());
                 }
             }
@@ -137,13 +158,38 @@ namespace DotNetCross.Memory.Views
 
             public static readonly T[] EmptyArray = new T[0];
 
-            public static readonly IntPtr ArrayAdjustment = MeasureArrayAdjustment();
+            public static readonly IntPtr ArrayAdjustment1D = MeasureArrayAdjustment1D();
+            public static readonly IntPtr ArrayAdjustment2D = MeasureArrayAdjustment2D();
+            public static readonly IntPtr ArrayAdjustment3D = MeasureArrayAdjustment3D();
+            public static readonly IntPtr ArrayAdjustment4D = MeasureArrayAdjustment4D();
+            public static readonly IntPtr ArrayAdjustment5D = MeasureArrayAdjustment5D();
 
-            // Array header sizes are a runtime implementation detail and aren't the same across all runtimes. (The CLR made a tweak after 4.5, and Mono has an extra Bounds pointer.)
-            private static IntPtr MeasureArrayAdjustment()
+            // Array header sizes are a runtime implementation detail and aren't the same across all runtimes. 
+            // (The CLR made a tweak after 4.5, and Mono has an extra Bounds pointer.)
+            private static IntPtr MeasureArrayAdjustment1D()
             {
                 T[] sampleArray = new T[1];
                 return Unsafe.ByteOffset(sampleArray, ref sampleArray[0]);
+            }
+            private static IntPtr MeasureArrayAdjustment2D()
+            {
+                T[,] sampleArray = new T[1,1];
+                return Unsafe.ByteOffset(sampleArray, ref sampleArray[0,0]);
+            }
+            private static IntPtr MeasureArrayAdjustment3D()
+            {
+                T[,,] sampleArray = new T[1, 1, 1];
+                return Unsafe.ByteOffset(sampleArray, ref sampleArray[0, 0, 0]);
+            }
+            private static IntPtr MeasureArrayAdjustment4D()
+            {
+                T[,,,] sampleArray = new T[1, 1, 1, 1];
+                return Unsafe.ByteOffset(sampleArray, ref sampleArray[0, 0, 0, 0]);
+            }
+            private static IntPtr MeasureArrayAdjustment5D()
+            {
+                T[,,,,] sampleArray = new T[1, 1, 1, 1, 1];
+                return Unsafe.ByteOffset(sampleArray, ref sampleArray[0, 0, 0, 0, 0]);
             }
         }
     }
