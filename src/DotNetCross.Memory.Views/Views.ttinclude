@@ -43,3 +43,24 @@
         }
     }
 #>
+<#+
+    void CtorMoveByteOffset(int dims)
+    {
+#>
+            _byteOffsetOrPointer = _byteOffsetOrPointer
+<#+
+        for (int dim = 0; dim < dims; ++dim)
+        {
+            if (dim < (dims - 1))
+            {
+#>
+                .Add(_byteStride<#= dim #>.Multiply(start<#= dim #>))
+<#+
+            } else {
+#>
+                .Add<T>(start<#= dim #>);
+<#+
+            }
+        }
+    }
+#>
