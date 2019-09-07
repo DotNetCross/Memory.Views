@@ -134,6 +134,12 @@ namespace DotNetCross.Memory.Views
     {
         length,
         start,
+        start0,
+        start1,
+        start2,
+        start3,
+        start4,
+        start5,
         minimumBufferSize,
         elementIndex,
         comparable,
