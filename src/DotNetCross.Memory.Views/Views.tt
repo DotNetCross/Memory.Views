@@ -27,6 +27,7 @@ namespace DotNetCross.Memory.Views
         string sameDimArray = "T[" + string.Join("", Enumerable.Repeat(",", dims -1 )) + "]";
         string startIndecesJoined = string.Join(", ", indeces.Select(i => "int start" + i));
         string lengthsJoined = string.Join(", ", indeces.Select(i => "int length" + i));
+        string indecesJoined = string.Join(", ", indeces.Select(i => "int index" + i));
         // TODO: Also add value tuple ctors
 #>
     [StructLayout(LayoutKind.Sequential)]
@@ -85,6 +86,9 @@ namespace DotNetCross.Memory.Views
             CtorUpdateLengthsToParams(dims);
 #>
         }
+<#
+        Indexer(indecesJoined, dims);
+#>
     }
 <#
     }
