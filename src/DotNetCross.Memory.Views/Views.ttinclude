@@ -1,6 +1,20 @@
 ﻿<#@ Assembly Name="System.Core.dll" #>
 <#@ import namespace="System" #>
 <#+
+    void CtorPreamble(string dimSuffix)
+    {
+#>
+            if (array == null)
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
+            if (default(T) == null && array.GetType() != typeof(T[]))
+                ThrowHelper.ThrowArrayTypeMismatchException_ArrayTypeMustBeExactMatch(typeof(T));
+
+            _objectOrNull = array;
+            _byteOffsetOrPointer = ViewHelper.PerTypeValues<T>.ArrayAdjustment<#= dimSuffix #>;
+<#+
+    }
+#>
+<#+
     void CtorSetLengths(int dims)
     {
         for (int dim = 0; dim < dims; ++dim)
@@ -44,6 +58,18 @@
     }
 #>
 <#+
+    void CtorCheckStartsAndLengths(int dims)
+    {
+        for (int dim = 0; dim < dims; ++dim)
+        {
+#>
+            if ((uint)start<#= dim #> > (uint)_length<#= dim #> || (uint)length<#= dim #> > (uint)(_length<#= dim #> - start<#= dim #>))
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start<#= dim #>);
+<#+
+        }
+    }
+#>
+<#+
     void CtorMoveByteOffset(int dims)
     {
 #>
@@ -61,6 +87,17 @@
                 .Add<T>(start<#= dim #>);
 <#+
             }
+        }
+    }
+#>
+<#+
+    void CtorUpdateLengthsToParams(int dims)
+    {
+        for (int dim = 0; dim < dims; ++dim)
+        {
+#>
+            _length<#= dim #> = length<#= dim #>;
+<#+
         }
     }
 #>

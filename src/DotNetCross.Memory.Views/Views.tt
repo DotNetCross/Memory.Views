@@ -27,7 +27,7 @@ namespace DotNetCross.Memory.Views
         string sameDimArray = "T[" + string.Join("", Enumerable.Repeat(",", dims -1 )) + "]";
         string startIndecesJoined = string.Join(", ", indeces.Select(i => "int start" + i));
         string lengthsJoined = string.Join(", ", indeces.Select(i => "int length" + i));
-        // TODO: Also add value type ctors
+        // TODO: Also add value tuple ctors
 #>
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct <#= type #><T>
@@ -55,14 +55,8 @@ namespace DotNetCross.Memory.Views
 
         public <#= type #>(<#= sameDimArray #> array)
         {
-            if (array == null)
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
-            if (default(T) == null && array.GetType() != typeof(T[]))
-                ThrowHelper.ThrowArrayTypeMismatchException_ArrayTypeMustBeExactMatch(typeof(T));
-
-            _objectOrNull = array;
-            _byteOffsetOrPointer = ViewHelper.PerTypeValues<T>.ArrayAdjustment<#= dimSuffix #>;
 <#
+            CtorPreamble(dimSuffix);
             CtorSetLengths(dims);
             CtorSetByteStrides(dims);
 #>
@@ -70,18 +64,25 @@ namespace DotNetCross.Memory.Views
 
         public <#= type #>(<#= sameDimArray #> array, <#= startIndecesJoined #>)
         {
-            if (array == null)
-                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.array);
-            if (default(T) == null && array.GetType() != typeof(T[]))
-                ThrowHelper.ThrowArrayTypeMismatchException_ArrayTypeMustBeExactMatch(typeof(T));
-
-            _objectOrNull = array;
-            _byteOffsetOrPointer = ViewHelper.PerTypeValues<T>.ArrayAdjustment<#= dimSuffix #>;
 <#
+            CtorPreamble(dimSuffix);
             CtorSetLengths(dims);
             CtorSetByteStrides(dims);
             CtorCheckStarts(dims);
             CtorMoveByteOffset(dims);
+#>
+        }
+
+        public <#= type #>(<#= sameDimArray #> array, <#= startIndecesJoined #>,
+            <#= lengthsJoined #>)
+        {
+<#
+            CtorPreamble(dimSuffix);
+            CtorSetLengths(dims);
+            CtorSetByteStrides(dims);
+            CtorCheckStartsAndLengths(dims);
+            CtorMoveByteOffset(dims);
+            CtorUpdateLengthsToParams(dims);
 #>
         }
     }
