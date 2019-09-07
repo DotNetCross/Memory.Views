@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+
 namespace DotNetCross.Memory.Views
 {
     [StructLayout(LayoutKind.Sequential)]
@@ -38,7 +39,6 @@ namespace DotNetCross.Memory.Views
             _objectOrNull = array;
             _byteOffsetOrPointer = ViewHelper.PerTypeValues<T>.ArrayAdjustment1D;
             _length0 = array.GetLength(0);
-
             if ((uint)start0 > (uint)_length0)
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start0);
             _byteOffsetOrPointer = _byteOffsetOrPointer
@@ -82,7 +82,6 @@ namespace DotNetCross.Memory.Views
             _length0 = array.GetLength(0);
             _length1 = array.GetLength(1);
             _byteStride0 = new IntPtr(_length1).Multiply(Unsafe.SizeOf<T>());
-
             if ((uint)start0 > (uint)_length0)
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start0);
             if ((uint)start1 > (uint)_length1)
@@ -135,7 +134,6 @@ namespace DotNetCross.Memory.Views
             _length2 = array.GetLength(2);
             _byteStride1 = new IntPtr(_length2).Multiply(Unsafe.SizeOf<T>());
             _byteStride0 = _byteStride1.Multiply(_length1);
-
             if ((uint)start0 > (uint)_length0)
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start0);
             if ((uint)start1 > (uint)_length1)
@@ -197,7 +195,6 @@ namespace DotNetCross.Memory.Views
             _byteStride2 = new IntPtr(_length3).Multiply(Unsafe.SizeOf<T>());
             _byteStride1 = _byteStride2.Multiply(_length2);
             _byteStride0 = _byteStride1.Multiply(_length1);
-
             if ((uint)start0 > (uint)_length0)
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start0);
             if ((uint)start1 > (uint)_length1)
@@ -268,7 +265,6 @@ namespace DotNetCross.Memory.Views
             _byteStride2 = _byteStride3.Multiply(_length3);
             _byteStride1 = _byteStride2.Multiply(_length2);
             _byteStride0 = _byteStride1.Multiply(_length1);
-
             if ((uint)start0 > (uint)_length0)
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start0);
             if ((uint)start1 > (uint)_length1)

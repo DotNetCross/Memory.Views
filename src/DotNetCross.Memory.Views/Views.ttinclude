@@ -1,0 +1,45 @@
+﻿<#@ Assembly Name="System.Core.dll" #>
+<#@ import namespace="System" #>
+<#+
+    void CtorSetLengths(int dims)
+    {
+        for (int dim = 0; dim < dims; ++dim)
+        {
+#>
+            _length<#= dim #> = array.GetLength(<#= dim #>);
+<#+
+        }
+    }
+#>
+<#+
+    void CtorSetByteStrides(int dims)
+    {
+        for (int dim = 0; dim < (dims - 1); ++dim)
+        {
+            if (dim == 0)
+            {
+#>
+            _byteStride<#= dims - dim - 2 #> = new IntPtr(_length<#= dims - dim - 1 #>).Multiply(Unsafe.SizeOf<T>());
+<#+
+            }
+            else
+            {
+#>
+            _byteStride<#= dims - dim - 2 #> = _byteStride<#= dims - dim - 1 #>.Multiply(_length<#= dims - dim - 1 #>);
+<#+
+            }
+        }
+    }
+#>
+<#+
+    void CtorCheckStarts(int dims)
+    {
+        for (int dim = 0; dim < dims; ++dim)
+        {
+#>
+            if ((uint)start<#= dim #> > (uint)_length<#= dim #>)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start<#= dim #>);
+<#+
+        }
+    }
+#>

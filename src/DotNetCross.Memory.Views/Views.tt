@@ -13,6 +13,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+<#@ include file="Views.ttinclude" #>
 
 namespace DotNetCross.Memory.Views
 {
@@ -25,6 +26,8 @@ namespace DotNetCross.Memory.Views
         IReadOnlyList<int> indeces = Enumerable.Range(0, dims).ToArray();
         string sameDimArray = "T[" + string.Join("", Enumerable.Repeat(",", dims -1 )) + "]";
         string startIndecesJoined = string.Join(", ", indeces.Select(i => "int start" + i));
+        string lengthsJoined = string.Join(", ", indeces.Select(i => "int length" + i));
+        // TODO: Also add value type ctors
 #>
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct <#= type #><T>
@@ -60,29 +63,8 @@ namespace DotNetCross.Memory.Views
             _objectOrNull = array;
             _byteOffsetOrPointer = ViewHelper.PerTypeValues<T>.ArrayAdjustment<#= dimSuffix #>;
 <#
-            for (int dim = 0; dim < dims; ++dim)
-            {
-#>
-            _length<#= dim #> = array.GetLength(<#= dim #>);
-<#
-            }
-#>
-<#
-            for (int dim = 0; dim < (dims - 1); ++dim)
-            {
-                if (dim == 0)
-                {
-#>
-            _byteStride<#= dims - dim - 2 #> = new IntPtr(_length<#= dims - dim - 1 #>).Multiply(Unsafe.SizeOf<T>());
-<#
-                }
-                else
-                {
-#>
-            _byteStride<#= dims - dim - 2 #> = _byteStride<#= dims - dim - 1 #>.Multiply(_length<#= dims - dim - 1 #>);
-<#
-                }
-            }
+            CtorSetLengths(dims);
+            CtorSetByteStrides(dims);
 #>
         }
 
@@ -96,39 +78,9 @@ namespace DotNetCross.Memory.Views
             _objectOrNull = array;
             _byteOffsetOrPointer = ViewHelper.PerTypeValues<T>.ArrayAdjustment<#= dimSuffix #>;
 <#
-            for (int dim = 0; dim < dims; ++dim)
-            {
-#>
-            _length<#= dim #> = array.GetLength(<#= dim #>);
-<#
-            }
-#>
-<#
-            for (int dim = 0; dim < (dims - 1); ++dim)
-            {
-                if (dim == 0)
-                {
-#>
-            _byteStride<#= dims - dim - 2 #> = new IntPtr(_length<#= dims - dim - 1 #>).Multiply(Unsafe.SizeOf<T>());
-<#
-                }
-                else
-                {
-#>
-            _byteStride<#= dims - dim - 2 #> = _byteStride<#= dims - dim - 1 #>.Multiply(_length<#= dims - dim - 1 #>);
-<#
-                }
-            }
-#>
-
-<#
-            for (int dim = 0; dim < dims; ++dim)
-            {
-#>
-            if ((uint)start<#= dim #> > (uint)_length<#= dim #>)
-                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start<#= dim #>);
-<#
-            }
+            CtorSetLengths(dims);
+            CtorSetByteStrides(dims);
+            CtorCheckStarts(dims);
 #>
             _byteOffsetOrPointer = _byteOffsetOrPointer
 <#
