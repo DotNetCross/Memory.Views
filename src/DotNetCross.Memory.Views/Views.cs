@@ -41,6 +41,8 @@ namespace DotNetCross.Memory.Views
 
             if ((uint)start0 > (uint)_length0)
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start0);
+            _byteOffsetOrPointer = _byteOffsetOrPointer
+                .Add<T>(start0);
         }
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -85,6 +87,9 @@ namespace DotNetCross.Memory.Views
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start0);
             if ((uint)start1 > (uint)_length1)
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start1);
+            _byteOffsetOrPointer = _byteOffsetOrPointer
+                .Add(_byteStride0.Multiply(start0))
+                .Add<T>(start1);
         }
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -137,6 +142,10 @@ namespace DotNetCross.Memory.Views
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start1);
             if ((uint)start2 > (uint)_length2)
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start2);
+            _byteOffsetOrPointer = _byteOffsetOrPointer
+                .Add(_byteStride0.Multiply(start0))
+                .Add(_byteStride1.Multiply(start1))
+                .Add<T>(start2);
         }
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -197,6 +206,11 @@ namespace DotNetCross.Memory.Views
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start2);
             if ((uint)start3 > (uint)_length3)
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start3);
+            _byteOffsetOrPointer = _byteOffsetOrPointer
+                .Add(_byteStride0.Multiply(start0))
+                .Add(_byteStride1.Multiply(start1))
+                .Add(_byteStride2.Multiply(start2))
+                .Add<T>(start3);
         }
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -265,6 +279,12 @@ namespace DotNetCross.Memory.Views
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start3);
             if ((uint)start4 > (uint)_length4)
                 ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.start4);
+            _byteOffsetOrPointer = _byteOffsetOrPointer
+                .Add(_byteStride0.Multiply(start0))
+                .Add(_byteStride1.Multiply(start1))
+                .Add(_byteStride2.Multiply(start2))
+                .Add(_byteStride3.Multiply(start3))
+                .Add<T>(start4);
         }
     }
 }

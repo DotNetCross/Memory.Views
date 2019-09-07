@@ -43,6 +43,23 @@ namespace DotNetCross.Memory.Views
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IntPtr Add(this IntPtr start, IntPtr offset)
+        {
+            unsafe
+            {
+                if (sizeof(IntPtr) == sizeof(int))
+                {
+                    return (IntPtr)(((int)start) + ((int)offset));
+                }
+                else
+                {
+                    // 64-bit path.
+                    return (IntPtr)(((long)start) + ((long)offset));
+                }
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IntPtr Multiply(this IntPtr start, int multiplier)
         {
             Debug.Assert(start.ToInt64() >= 0);
