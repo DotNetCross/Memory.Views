@@ -104,9 +104,10 @@
 <#+
     void Indexer(string indecesJoined, int dims)
     {
-        var indecesCheck = Enumerable.Range(dims)
-            .Select(i => $"(uint)index{i} >= (uint)_length{i});
-        var indecesCh = string.Join(" || ", indecesCheck);
+        var indecesCheck = Enumerable.Range(0, dims)
+            .Select(i => $"(uint)index{i} >= (uint)_length{i}").ToArray();
+        var indecesCheckJoined = string.Join(
+            $" ||{Environment.NewLine}                    ", indecesCheck);
 #>
         public ref T this[<#= indecesJoined #>]
         {
@@ -114,19 +115,26 @@
             //[NonVersionable]
             get
             {
+                if (<#= indecesCheckJoined #>)
+                    ThrowHelper.ThrowIndexOutOfRangeException();
+
+                return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
+                    _byteOffsetOrPointer
 <#+
         for (int dim = 0; dim < dims; ++dim)
         {
+            if (dim < (dims - 1)) {
 #>
-                if ((uint)index<#= dim #> >= (uint)_length<#= dim #>)
-                    ThrowHelper.ThrowIndexOutOfRangeException();
-
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
+                        .Add(_byteStride<#= dim #>.Multiply(_length<#= dim #>))
 <#+
+            } else {
+#>
+                        .Add<T>(_length<#= dim #>)
+<#+
+            }
         }
 #>
+                    );
             }
         }
 <#+

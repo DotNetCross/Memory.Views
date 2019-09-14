@@ -71,9 +71,10 @@ namespace DotNetCross.Memory.Views
                 if ((uint)index0 >= (uint)_length0)
                     ThrowHelper.ThrowIndexOutOfRangeException();
 
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
+                return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
+                    _byteOffsetOrPointer
+                        .Add<T>(_length0)
+                    );
             }
         }
     }
@@ -152,18 +153,15 @@ namespace DotNetCross.Memory.Views
             //[NonVersionable]
             get
             {
-                if ((uint)index0 >= (uint)_length0)
+                if ((uint)index0 >= (uint)_length0 ||
+                    (uint)index1 >= (uint)_length1)
                     ThrowHelper.ThrowIndexOutOfRangeException();
 
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
-                if ((uint)index1 >= (uint)_length1)
-                    ThrowHelper.ThrowIndexOutOfRangeException();
-
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
+                return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
+                    _byteOffsetOrPointer
+                        .Add(_byteStride0.Multiply(_length0))
+                        .Add<T>(_length1)
+                    );
             }
         }
     }
@@ -257,24 +255,17 @@ namespace DotNetCross.Memory.Views
             //[NonVersionable]
             get
             {
-                if ((uint)index0 >= (uint)_length0)
+                if ((uint)index0 >= (uint)_length0 ||
+                    (uint)index1 >= (uint)_length1 ||
+                    (uint)index2 >= (uint)_length2)
                     ThrowHelper.ThrowIndexOutOfRangeException();
 
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
-                if ((uint)index1 >= (uint)_length1)
-                    ThrowHelper.ThrowIndexOutOfRangeException();
-
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
-                if ((uint)index2 >= (uint)_length2)
-                    ThrowHelper.ThrowIndexOutOfRangeException();
-
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
+                return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
+                    _byteOffsetOrPointer
+                        .Add(_byteStride0.Multiply(_length0))
+                        .Add(_byteStride1.Multiply(_length1))
+                        .Add<T>(_length2)
+                    );
             }
         }
     }
@@ -383,30 +374,19 @@ namespace DotNetCross.Memory.Views
             //[NonVersionable]
             get
             {
-                if ((uint)index0 >= (uint)_length0)
+                if ((uint)index0 >= (uint)_length0 ||
+                    (uint)index1 >= (uint)_length1 ||
+                    (uint)index2 >= (uint)_length2 ||
+                    (uint)index3 >= (uint)_length3)
                     ThrowHelper.ThrowIndexOutOfRangeException();
 
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
-                if ((uint)index1 >= (uint)_length1)
-                    ThrowHelper.ThrowIndexOutOfRangeException();
-
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
-                if ((uint)index2 >= (uint)_length2)
-                    ThrowHelper.ThrowIndexOutOfRangeException();
-
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
-                if ((uint)index3 >= (uint)_length3)
-                    ThrowHelper.ThrowIndexOutOfRangeException();
-
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
+                return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
+                    _byteOffsetOrPointer
+                        .Add(_byteStride0.Multiply(_length0))
+                        .Add(_byteStride1.Multiply(_length1))
+                        .Add(_byteStride2.Multiply(_length2))
+                        .Add<T>(_length3)
+                    );
             }
         }
     }
@@ -530,36 +510,21 @@ namespace DotNetCross.Memory.Views
             //[NonVersionable]
             get
             {
-                if ((uint)index0 >= (uint)_length0)
+                if ((uint)index0 >= (uint)_length0 ||
+                    (uint)index1 >= (uint)_length1 ||
+                    (uint)index2 >= (uint)_length2 ||
+                    (uint)index3 >= (uint)_length3 ||
+                    (uint)index4 >= (uint)_length4)
                     ThrowHelper.ThrowIndexOutOfRangeException();
 
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
-                if ((uint)index1 >= (uint)_length1)
-                    ThrowHelper.ThrowIndexOutOfRangeException();
-
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
-                if ((uint)index2 >= (uint)_length2)
-                    ThrowHelper.ThrowIndexOutOfRangeException();
-
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
-                if ((uint)index3 >= (uint)_length3)
-                    ThrowHelper.ThrowIndexOutOfRangeException();
-
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
-                if ((uint)index4 >= (uint)_length4)
-                    ThrowHelper.ThrowIndexOutOfRangeException();
-
-                // TODO: Consider using nint via DotNetCross.NativeInts
-                //return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
-                //    _byteOffsetOrPointer.Add<T>(index));
+                return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
+                    _byteOffsetOrPointer
+                        .Add(_byteStride0.Multiply(_length0))
+                        .Add(_byteStride1.Multiply(_length1))
+                        .Add(_byteStride2.Multiply(_length2))
+                        .Add(_byteStride3.Multiply(_length3))
+                        .Add<T>(_length4)
+                    );
             }
         }
     }
