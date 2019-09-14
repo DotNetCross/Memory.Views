@@ -81,6 +81,18 @@
     }
 #>
 <#+
+    void CtorCheckLengthsNotNegative(int dims)
+    {
+        for (int dim = 0; dim < dims; ++dim)
+        {
+#>
+            if (length<#= dim #> < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length<#= dim #>);
+<#+
+        }
+    }
+#>
+<#+
     void CtorCheckStartsAndLengths(int dims)
     {
         for (int dim = 0; dim < dims; ++dim)

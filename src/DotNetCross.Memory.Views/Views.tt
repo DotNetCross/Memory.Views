@@ -30,6 +30,11 @@ namespace DotNetCross.Memory.Views
         string indecesJoined = string.Join(", ", indeces.Select(i => "int index" + i));
         IReadOnlyList<int> byteStrideIndeces = Enumerable.Range(0, dims - 1).ToArray();
         string byteStridesJoined = string.Join(", ", byteStrideIndeces.Select(i => "IntPtr byteStride" + i));
+        string lengthsAndByteStridesJoined = dims <= 1 ? lengthsJoined : lengthsJoined + ", " + byteStridesJoined;
+  
+        string lengthsOnlyJoined = string.Join(", ", indeces.Select(i => "length" + i));
+        string byteStridesOnlyJoined = string.Join(", ", byteStrideIndeces.Select(i => "byteStride" + i));
+        string lengthsAndByteStridesOnlyJoined = dims <= 1 ? lengthsOnlyJoined : lengthsOnlyJoined + ", " + byteStridesOnlyJoined;
         // TODO: Also add value tuple ctors
 #>
     [StructLayout(LayoutKind.Sequential)]
@@ -113,9 +118,45 @@ namespace DotNetCross.Memory.Views
         }
 #>
 
+        // Constructor for internal use only.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal <#= type #>(object obj, IntPtr byteOffset, 
+            <#= lengthsAndByteStridesJoined #>)
+        {
+            //Debug.Assert(length >= 0);
+
+            _objectOrNull = obj;
+            _byteOffsetOrPointer = byteOffset;
+<#
+            CtorUpdateLengthsToParams(dims);
+            CtorSetByteStrides(dims);
+#>
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static <#= type #><T> DangerousCreate(object obj, ref T objectData, 
+            <#= lengthsAndByteStridesJoined #>)
+        {
+            if (obj == null)
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.obj);
+<#
+            CtorCheckLengthsNotNegative(dims);
+#>
+
+            IntPtr byteOffset = Unsafe.ByteOffset(obj, ref objectData);
+            return new <#= type #><T>(obj, byteOffset, 
+                <#= lengthsAndByteStridesOnlyJoined #>);
+        }
+
 <#
         Indexer(indecesJoined, dims);
 #>
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T GetPinnableReference()
+        {
+            return ref Unsafe.RefAtByteOffset<T>(_objectOrNull, _byteOffsetOrPointer);
+        }
     }
 <#
     }

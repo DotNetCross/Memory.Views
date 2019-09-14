@@ -133,6 +133,12 @@ namespace DotNetCross.Memory.Views
     internal enum ExceptionArgument
     {
         length,
+        length0,
+        length1,
+        length2,
+        length3,
+        length4,
+        length5,
         start,
         start0,
         start1,

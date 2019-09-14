@@ -11,6 +11,40 @@ namespace DotNetCross.Memory.Views
     // Fast Span
     // https://github.com/dotnet/corefx/blob/master/src/Common/src/CoreLib/System/Span.Fast.cs
 
+    public readonly partial struct View1D<T>
+    {
+        public int Length => _length0;
+
+        public unsafe Span<T> AsSpan()
+        {
+#if HASSPAN
+            // Unfortunately only netcoreapp2.1 supports creating spans over any ref
+            return MemoryMarshal.CreateSpan<T>(ref GetPinnableReference(), _length0);
+#else
+            if (_objectOrNull == null)
+            {
+                return new Span<T>(_byteOffsetOrPointer.ToPointer(), _length0);
+            }
+            else if (_objectOrNull is T[] array)
+            {
+                // Span ctors are sorely lacking for other than the default stuff
+                // perhaps use reflection/IL emit or similar to construct directly
+                var start = ViewHelper.ArrayIndexOfByteOffset<T>(_byteOffsetOrPointer);
+                return new Span<T>(array, start, _length0);
+            }
+            else
+            {
+                // Span ctors are sorely lacking for other than the default stuff
+                // perhaps use reflection/IL emit or similar to construct directly
+                // We cannot create a span via normal ctors for e.g. 
+                // multi -dimensional arrays.
+                // TODO: For now throw exception
+                return ThrowHelper.ThrowNotSupportedException_ViewNotSupportedBySpan<T>();
+            }
+#endif
+        }
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct OldView1D<T>
     {

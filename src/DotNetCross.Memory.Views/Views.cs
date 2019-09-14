@@ -72,6 +72,32 @@ namespace DotNetCross.Memory.Views
             _length0 = length0;
         }
 
+        // Constructor for internal use only.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal View1D(object obj, IntPtr byteOffset, 
+            int length0)
+        {
+            //Debug.Assert(length >= 0);
+
+            _objectOrNull = obj;
+            _byteOffsetOrPointer = byteOffset;
+            _length0 = length0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static View1D<T> DangerousCreate(object obj, ref T objectData, 
+            int length0)
+        {
+            if (obj == null)
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.obj);
+            if (length0 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length0);
+
+            IntPtr byteOffset = Unsafe.ByteOffset(obj, ref objectData);
+            return new View1D<T>(obj, byteOffset, 
+                length0);
+        }
+
         public ref T this[int index0]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -86,6 +112,12 @@ namespace DotNetCross.Memory.Views
                         .Add<T>(_length0)
                     );
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T GetPinnableReference()
+        {
+            return ref Unsafe.RefAtByteOffset<T>(_objectOrNull, _byteOffsetOrPointer);
         }
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -181,6 +213,36 @@ namespace DotNetCross.Memory.Views
             _byteStride0 = byteStride0;
         }
 
+        // Constructor for internal use only.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal View2D(object obj, IntPtr byteOffset, 
+            int length0, int length1, IntPtr byteStride0)
+        {
+            //Debug.Assert(length >= 0);
+
+            _objectOrNull = obj;
+            _byteOffsetOrPointer = byteOffset;
+            _length0 = length0;
+            _length1 = length1;
+            _byteStride0 = byteStride0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static View2D<T> DangerousCreate(object obj, ref T objectData, 
+            int length0, int length1, IntPtr byteStride0)
+        {
+            if (obj == null)
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.obj);
+            if (length0 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length0);
+            if (length1 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length1);
+
+            IntPtr byteOffset = Unsafe.ByteOffset(obj, ref objectData);
+            return new View2D<T>(obj, byteOffset, 
+                length0, length1, byteStride0);
+        }
+
         public ref T this[int index0, int index1]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -197,6 +259,12 @@ namespace DotNetCross.Memory.Views
                         .Add<T>(_length1)
                     );
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T GetPinnableReference()
+        {
+            return ref Unsafe.RefAtByteOffset<T>(_objectOrNull, _byteOffsetOrPointer);
         }
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -311,6 +379,40 @@ namespace DotNetCross.Memory.Views
             _byteStride1 = byteStride1;
         }
 
+        // Constructor for internal use only.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal View3D(object obj, IntPtr byteOffset, 
+            int length0, int length1, int length2, IntPtr byteStride0, IntPtr byteStride1)
+        {
+            //Debug.Assert(length >= 0);
+
+            _objectOrNull = obj;
+            _byteOffsetOrPointer = byteOffset;
+            _length0 = length0;
+            _length1 = length1;
+            _length2 = length2;
+            _byteStride0 = byteStride0;
+            _byteStride1 = byteStride1;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static View3D<T> DangerousCreate(object obj, ref T objectData, 
+            int length0, int length1, int length2, IntPtr byteStride0, IntPtr byteStride1)
+        {
+            if (obj == null)
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.obj);
+            if (length0 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length0);
+            if (length1 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length1);
+            if (length2 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length2);
+
+            IntPtr byteOffset = Unsafe.ByteOffset(obj, ref objectData);
+            return new View3D<T>(obj, byteOffset, 
+                length0, length1, length2, byteStride0, byteStride1);
+        }
+
         public ref T this[int index0, int index1, int index2]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -329,6 +431,12 @@ namespace DotNetCross.Memory.Views
                         .Add<T>(_length2)
                     );
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T GetPinnableReference()
+        {
+            return ref Unsafe.RefAtByteOffset<T>(_objectOrNull, _byteOffsetOrPointer);
         }
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -462,6 +570,44 @@ namespace DotNetCross.Memory.Views
             _byteStride2 = byteStride2;
         }
 
+        // Constructor for internal use only.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal View4D(object obj, IntPtr byteOffset, 
+            int length0, int length1, int length2, int length3, IntPtr byteStride0, IntPtr byteStride1, IntPtr byteStride2)
+        {
+            //Debug.Assert(length >= 0);
+
+            _objectOrNull = obj;
+            _byteOffsetOrPointer = byteOffset;
+            _length0 = length0;
+            _length1 = length1;
+            _length2 = length2;
+            _length3 = length3;
+            _byteStride0 = byteStride0;
+            _byteStride1 = byteStride1;
+            _byteStride2 = byteStride2;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static View4D<T> DangerousCreate(object obj, ref T objectData, 
+            int length0, int length1, int length2, int length3, IntPtr byteStride0, IntPtr byteStride1, IntPtr byteStride2)
+        {
+            if (obj == null)
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.obj);
+            if (length0 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length0);
+            if (length1 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length1);
+            if (length2 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length2);
+            if (length3 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length3);
+
+            IntPtr byteOffset = Unsafe.ByteOffset(obj, ref objectData);
+            return new View4D<T>(obj, byteOffset, 
+                length0, length1, length2, length3, byteStride0, byteStride1, byteStride2);
+        }
+
         public ref T this[int index0, int index1, int index2, int index3]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -482,6 +628,12 @@ namespace DotNetCross.Memory.Views
                         .Add<T>(_length3)
                     );
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T GetPinnableReference()
+        {
+            return ref Unsafe.RefAtByteOffset<T>(_objectOrNull, _byteOffsetOrPointer);
         }
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -634,6 +786,48 @@ namespace DotNetCross.Memory.Views
             _byteStride3 = byteStride3;
         }
 
+        // Constructor for internal use only.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal View5D(object obj, IntPtr byteOffset, 
+            int length0, int length1, int length2, int length3, int length4, IntPtr byteStride0, IntPtr byteStride1, IntPtr byteStride2, IntPtr byteStride3)
+        {
+            //Debug.Assert(length >= 0);
+
+            _objectOrNull = obj;
+            _byteOffsetOrPointer = byteOffset;
+            _length0 = length0;
+            _length1 = length1;
+            _length2 = length2;
+            _length3 = length3;
+            _length4 = length4;
+            _byteStride0 = byteStride0;
+            _byteStride1 = byteStride1;
+            _byteStride2 = byteStride2;
+            _byteStride3 = byteStride3;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static View5D<T> DangerousCreate(object obj, ref T objectData, 
+            int length0, int length1, int length2, int length3, int length4, IntPtr byteStride0, IntPtr byteStride1, IntPtr byteStride2, IntPtr byteStride3)
+        {
+            if (obj == null)
+                ThrowHelper.ThrowArgumentNullException(ExceptionArgument.obj);
+            if (length0 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length0);
+            if (length1 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length1);
+            if (length2 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length2);
+            if (length3 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length3);
+            if (length4 < 0)
+                ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument.length4);
+
+            IntPtr byteOffset = Unsafe.ByteOffset(obj, ref objectData);
+            return new View5D<T>(obj, byteOffset, 
+                length0, length1, length2, length3, length4, byteStride0, byteStride1, byteStride2, byteStride3);
+        }
+
         public ref T this[int index0, int index1, int index2, int index3, int index4]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -656,6 +850,12 @@ namespace DotNetCross.Memory.Views
                         .Add<T>(_length4)
                     );
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T GetPinnableReference()
+        {
+            return ref Unsafe.RefAtByteOffset<T>(_objectOrNull, _byteOffsetOrPointer);
         }
     }
 }
