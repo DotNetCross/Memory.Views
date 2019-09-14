@@ -160,11 +160,11 @@
         {
             if (dim < (dims - 1)) {
 #>
-                        .Add(_byteStride<#= dim #>.Multiply(_length<#= dim #>))
+                        .Add(_byteStride<#= dim #>.Multiply(index<#= dim #>))
 <#+
             } else {
 #>
-                        .Add<T>(_length<#= dim #>)
+                        .Add<T>(index<#= dim #>)
 <#+
             }
         }

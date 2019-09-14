@@ -109,7 +109,7 @@ namespace DotNetCross.Memory.Views
 
                 return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
                     _byteOffsetOrPointer
-                        .Add<T>(_length0)
+                        .Add<T>(index0)
                     );
             }
         }
@@ -255,8 +255,8 @@ namespace DotNetCross.Memory.Views
 
                 return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
                     _byteOffsetOrPointer
-                        .Add(_byteStride0.Multiply(_length0))
-                        .Add<T>(_length1)
+                        .Add(_byteStride0.Multiply(index0))
+                        .Add<T>(index1)
                     );
             }
         }
@@ -426,9 +426,9 @@ namespace DotNetCross.Memory.Views
 
                 return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
                     _byteOffsetOrPointer
-                        .Add(_byteStride0.Multiply(_length0))
-                        .Add(_byteStride1.Multiply(_length1))
-                        .Add<T>(_length2)
+                        .Add(_byteStride0.Multiply(index0))
+                        .Add(_byteStride1.Multiply(index1))
+                        .Add<T>(index2)
                     );
             }
         }
@@ -622,10 +622,10 @@ namespace DotNetCross.Memory.Views
 
                 return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
                     _byteOffsetOrPointer
-                        .Add(_byteStride0.Multiply(_length0))
-                        .Add(_byteStride1.Multiply(_length1))
-                        .Add(_byteStride2.Multiply(_length2))
-                        .Add<T>(_length3)
+                        .Add(_byteStride0.Multiply(index0))
+                        .Add(_byteStride1.Multiply(index1))
+                        .Add(_byteStride2.Multiply(index2))
+                        .Add<T>(index3)
                     );
             }
         }
@@ -843,11 +843,11 @@ namespace DotNetCross.Memory.Views
 
                 return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
                     _byteOffsetOrPointer
-                        .Add(_byteStride0.Multiply(_length0))
-                        .Add(_byteStride1.Multiply(_length1))
-                        .Add(_byteStride2.Multiply(_length2))
-                        .Add(_byteStride3.Multiply(_length3))
-                        .Add<T>(_length4)
+                        .Add(_byteStride0.Multiply(index0))
+                        .Add(_byteStride1.Multiply(index1))
+                        .Add(_byteStride2.Multiply(index2))
+                        .Add(_byteStride3.Multiply(index3))
+                        .Add<T>(index4)
                     );
             }
         }

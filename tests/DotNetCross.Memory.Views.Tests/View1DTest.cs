@@ -24,6 +24,7 @@ namespace DotNetCross.Memory.Views.Tests
         public unsafe void View1DTest_Ctor_MultidimensionalArray()
         {
             var array = new int[,] { { 17, 18, 19, 20 }, { 21, 22, 23, 24 }, };
+            var oldview = OldView1D<int>.DangerousCreate(array, ref array[0, 2], 4);
             var view = View1D<int>.DangerousCreate(array, ref array[0, 2], 4);
             Assert.Equal(4,  view.Length);
             Assert.Equal(19, view[0]);
