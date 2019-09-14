@@ -38,7 +38,7 @@
     }
 #>
 <#+
-    void CtorSetByteStrides(int dims)
+    void CtorSetByteStridesFromLengths(int dims)
     {
         for (int dim = 0; dim < (dims - 1); ++dim)
         {
@@ -54,6 +54,17 @@
             _byteStride<#= dims - dim - 2 #> = _byteStride<#= dims - dim - 1 #>.Multiply(_length<#= dims - dim - 1 #>);
 <#+
             }
+        }
+    }
+#>
+<#+
+    void CtorSetByteStrides(int dims)
+    {
+        for (int dim = 0; dim < (dims - 1); ++dim)
+        {
+#>
+            _byteStride<#= dim #> = byteStride<#= dim #>;
+<#+
         }
     }
 #>

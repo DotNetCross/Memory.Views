@@ -71,6 +71,7 @@ namespace DotNetCross.Memory.Views
             _byteOffsetOrPointer = new IntPtr(pointer);
             _length0 = length0;
         }
+
         public ref T this[int index0]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -167,6 +168,19 @@ namespace DotNetCross.Memory.Views
             _length1 = length1;
             _byteStride0 = new IntPtr(_length1).Multiply(Unsafe.SizeOf<T>());
         }
+        public unsafe View2D(void* pointer, int length0, int length1,
+            IntPtr byteStride0)
+        {
+            if (!ViewHelper.IsReferenceFree<T>())
+                ThrowHelper.ThrowArgumentException_InvalidTypeWithPointersNotSupported(typeof(T));
+
+            _objectOrNull = null;
+            _byteOffsetOrPointer = new IntPtr(pointer);
+            _length0 = length0;
+            _length1 = length1;
+            _byteStride0 = byteStride0;
+        }
+
         public ref T this[int index0, int index1]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -282,6 +296,21 @@ namespace DotNetCross.Memory.Views
             _byteStride1 = new IntPtr(_length2).Multiply(Unsafe.SizeOf<T>());
             _byteStride0 = _byteStride1.Multiply(_length1);
         }
+        public unsafe View3D(void* pointer, int length0, int length1, int length2,
+            IntPtr byteStride0, IntPtr byteStride1)
+        {
+            if (!ViewHelper.IsReferenceFree<T>())
+                ThrowHelper.ThrowArgumentException_InvalidTypeWithPointersNotSupported(typeof(T));
+
+            _objectOrNull = null;
+            _byteOffsetOrPointer = new IntPtr(pointer);
+            _length0 = length0;
+            _length1 = length1;
+            _length2 = length2;
+            _byteStride0 = byteStride0;
+            _byteStride1 = byteStride1;
+        }
+
         public ref T this[int index0, int index1, int index2]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -416,6 +445,23 @@ namespace DotNetCross.Memory.Views
             _byteStride1 = _byteStride2.Multiply(_length2);
             _byteStride0 = _byteStride1.Multiply(_length1);
         }
+        public unsafe View4D(void* pointer, int length0, int length1, int length2, int length3,
+            IntPtr byteStride0, IntPtr byteStride1, IntPtr byteStride2)
+        {
+            if (!ViewHelper.IsReferenceFree<T>())
+                ThrowHelper.ThrowArgumentException_InvalidTypeWithPointersNotSupported(typeof(T));
+
+            _objectOrNull = null;
+            _byteOffsetOrPointer = new IntPtr(pointer);
+            _length0 = length0;
+            _length1 = length1;
+            _length2 = length2;
+            _length3 = length3;
+            _byteStride0 = byteStride0;
+            _byteStride1 = byteStride1;
+            _byteStride2 = byteStride2;
+        }
+
         public ref T this[int index0, int index1, int index2, int index3]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -569,6 +615,25 @@ namespace DotNetCross.Memory.Views
             _byteStride1 = _byteStride2.Multiply(_length2);
             _byteStride0 = _byteStride1.Multiply(_length1);
         }
+        public unsafe View5D(void* pointer, int length0, int length1, int length2, int length3, int length4,
+            IntPtr byteStride0, IntPtr byteStride1, IntPtr byteStride2, IntPtr byteStride3)
+        {
+            if (!ViewHelper.IsReferenceFree<T>())
+                ThrowHelper.ThrowArgumentException_InvalidTypeWithPointersNotSupported(typeof(T));
+
+            _objectOrNull = null;
+            _byteOffsetOrPointer = new IntPtr(pointer);
+            _length0 = length0;
+            _length1 = length1;
+            _length2 = length2;
+            _length3 = length3;
+            _length4 = length4;
+            _byteStride0 = byteStride0;
+            _byteStride1 = byteStride1;
+            _byteStride2 = byteStride2;
+            _byteStride3 = byteStride3;
+        }
+
         public ref T this[int index0, int index1, int index2, int index3, int index4]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

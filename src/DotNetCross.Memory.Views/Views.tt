@@ -28,6 +28,8 @@ namespace DotNetCross.Memory.Views
         string startIndecesJoined = string.Join(", ", indeces.Select(i => "int start" + i));
         string lengthsJoined = string.Join(", ", indeces.Select(i => "int length" + i));
         string indecesJoined = string.Join(", ", indeces.Select(i => "int index" + i));
+        IReadOnlyList<int> byteStrideIndeces = Enumerable.Range(0, dims - 1).ToArray();
+        string byteStridesJoined = string.Join(", ", byteStrideIndeces.Select(i => "IntPtr byteStride" + i));
         // TODO: Also add value tuple ctors
 #>
     [StructLayout(LayoutKind.Sequential)]
@@ -59,7 +61,7 @@ namespace DotNetCross.Memory.Views
 <#
             CtorArrayPreamble(dimSuffix);
             CtorSetLengthsByArray(dims);
-            CtorSetByteStrides(dims);
+            CtorSetByteStridesFromLengths(dims);
 #>
         }
 
@@ -68,7 +70,7 @@ namespace DotNetCross.Memory.Views
 <#
             CtorArrayPreamble(dimSuffix);
             CtorSetLengthsByArray(dims);
-            CtorSetByteStrides(dims);
+            CtorSetByteStridesFromLengths(dims);
             CtorCheckStarts(dims);
             CtorMoveByteOffset(dims);
 #>
@@ -80,7 +82,7 @@ namespace DotNetCross.Memory.Views
 <#
             CtorArrayPreamble(dimSuffix);
             CtorSetLengthsByArray(dims);
-            CtorSetByteStrides(dims);
+            CtorSetByteStridesFromLengths(dims);
             CtorCheckStartsAndLengths(dims);
             CtorMoveByteOffset(dims);
             CtorUpdateLengthsToParams(dims);
@@ -91,9 +93,26 @@ namespace DotNetCross.Memory.Views
 <#
             CtorPointerPreamble(dimSuffix);
             CtorUpdateLengthsToParams(dims);
+            CtorSetByteStridesFromLengths(dims);
+#>
+        }
+<#
+        if (dims > 1)
+        {
+#>
+        public unsafe <#= type #>(void* pointer, <#= lengthsJoined #>,
+            <#= byteStridesJoined #>)
+        {
+<#
+            CtorPointerPreamble(dimSuffix);
+            CtorUpdateLengthsToParams(dims);
             CtorSetByteStrides(dims);
 #>
         }
+<#
+        }
+#>
+
 <#
         Indexer(indecesJoined, dims);
 #>
