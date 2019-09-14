@@ -1,7 +1,7 @@
 ﻿<#@ Assembly Name="System.Core.dll" #>
 <#@ import namespace="System" #>
 <#+
-    void CtorPreamble(string dimSuffix)
+    void CtorArrayPreamble(string dimSuffix)
     {
 #>
             if (array == null)
@@ -15,7 +15,19 @@
     }
 #>
 <#+
-    void CtorSetLengths(int dims)
+    void CtorPointerPreamble(string dimSuffix)
+    {
+#>
+            if (!ViewHelper.IsReferenceFree<T>())
+                ThrowHelper.ThrowArgumentException_InvalidTypeWithPointersNotSupported(typeof(T));
+
+            _objectOrNull = null;
+            _byteOffsetOrPointer = new IntPtr(pointer);
+<#+
+    }
+#>
+<#+
+    void CtorSetLengthsByArray(int dims)
     {
         for (int dim = 0; dim < dims; ++dim)
         {

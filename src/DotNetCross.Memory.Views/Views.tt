@@ -31,7 +31,7 @@ namespace DotNetCross.Memory.Views
         // TODO: Also add value tuple ctors
 #>
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct <#= type #><T>
+    public readonly partial struct <#= type #><T>
     {
         readonly object _objectOrNull;
         readonly IntPtr _byteOffsetOrPointer;
@@ -57,8 +57,8 @@ namespace DotNetCross.Memory.Views
         public <#= type #>(<#= sameDimArray #> array)
         {
 <#
-            CtorPreamble(dimSuffix);
-            CtorSetLengths(dims);
+            CtorArrayPreamble(dimSuffix);
+            CtorSetLengthsByArray(dims);
             CtorSetByteStrides(dims);
 #>
         }
@@ -66,8 +66,8 @@ namespace DotNetCross.Memory.Views
         public <#= type #>(<#= sameDimArray #> array, <#= startIndecesJoined #>)
         {
 <#
-            CtorPreamble(dimSuffix);
-            CtorSetLengths(dims);
+            CtorArrayPreamble(dimSuffix);
+            CtorSetLengthsByArray(dims);
             CtorSetByteStrides(dims);
             CtorCheckStarts(dims);
             CtorMoveByteOffset(dims);
@@ -78,12 +78,20 @@ namespace DotNetCross.Memory.Views
             <#= lengthsJoined #>)
         {
 <#
-            CtorPreamble(dimSuffix);
-            CtorSetLengths(dims);
+            CtorArrayPreamble(dimSuffix);
+            CtorSetLengthsByArray(dims);
             CtorSetByteStrides(dims);
             CtorCheckStartsAndLengths(dims);
             CtorMoveByteOffset(dims);
             CtorUpdateLengthsToParams(dims);
+#>
+        }
+        public unsafe <#= type #>(void* pointer, <#= lengthsJoined #>)
+        {
+<#
+            CtorPointerPreamble(dimSuffix);
+            CtorUpdateLengthsToParams(dims);
+            CtorSetByteStrides(dims);
 #>
         }
 <#

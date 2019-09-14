@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace DotNetCross.Memory.Views
 {
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct View1D<T>
+    public readonly partial struct View1D<T>
     {
         readonly object _objectOrNull;
         readonly IntPtr _byteOffsetOrPointer;
@@ -62,6 +62,15 @@ namespace DotNetCross.Memory.Views
                 .Add<T>(start0);
             _length0 = length0;
         }
+        public unsafe View1D(void* pointer, int length0)
+        {
+            if (!ViewHelper.IsReferenceFree<T>())
+                ThrowHelper.ThrowArgumentException_InvalidTypeWithPointersNotSupported(typeof(T));
+
+            _objectOrNull = null;
+            _byteOffsetOrPointer = new IntPtr(pointer);
+            _length0 = length0;
+        }
         public ref T this[int index0]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -79,7 +88,7 @@ namespace DotNetCross.Memory.Views
         }
     }
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct View2D<T>
+    public readonly partial struct View2D<T>
     {
         readonly object _objectOrNull;
         readonly IntPtr _byteOffsetOrPointer;
@@ -147,6 +156,17 @@ namespace DotNetCross.Memory.Views
             _length0 = length0;
             _length1 = length1;
         }
+        public unsafe View2D(void* pointer, int length0, int length1)
+        {
+            if (!ViewHelper.IsReferenceFree<T>())
+                ThrowHelper.ThrowArgumentException_InvalidTypeWithPointersNotSupported(typeof(T));
+
+            _objectOrNull = null;
+            _byteOffsetOrPointer = new IntPtr(pointer);
+            _length0 = length0;
+            _length1 = length1;
+            _byteStride0 = new IntPtr(_length1).Multiply(Unsafe.SizeOf<T>());
+        }
         public ref T this[int index0, int index1]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -166,7 +186,7 @@ namespace DotNetCross.Memory.Views
         }
     }
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct View3D<T>
+    public readonly partial struct View3D<T>
     {
         readonly object _objectOrNull;
         readonly IntPtr _byteOffsetOrPointer;
@@ -249,6 +269,19 @@ namespace DotNetCross.Memory.Views
             _length1 = length1;
             _length2 = length2;
         }
+        public unsafe View3D(void* pointer, int length0, int length1, int length2)
+        {
+            if (!ViewHelper.IsReferenceFree<T>())
+                ThrowHelper.ThrowArgumentException_InvalidTypeWithPointersNotSupported(typeof(T));
+
+            _objectOrNull = null;
+            _byteOffsetOrPointer = new IntPtr(pointer);
+            _length0 = length0;
+            _length1 = length1;
+            _length2 = length2;
+            _byteStride1 = new IntPtr(_length2).Multiply(Unsafe.SizeOf<T>());
+            _byteStride0 = _byteStride1.Multiply(_length1);
+        }
         public ref T this[int index0, int index1, int index2]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -270,7 +303,7 @@ namespace DotNetCross.Memory.Views
         }
     }
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct View4D<T>
+    public readonly partial struct View4D<T>
     {
         readonly object _objectOrNull;
         readonly IntPtr _byteOffsetOrPointer;
@@ -368,6 +401,21 @@ namespace DotNetCross.Memory.Views
             _length2 = length2;
             _length3 = length3;
         }
+        public unsafe View4D(void* pointer, int length0, int length1, int length2, int length3)
+        {
+            if (!ViewHelper.IsReferenceFree<T>())
+                ThrowHelper.ThrowArgumentException_InvalidTypeWithPointersNotSupported(typeof(T));
+
+            _objectOrNull = null;
+            _byteOffsetOrPointer = new IntPtr(pointer);
+            _length0 = length0;
+            _length1 = length1;
+            _length2 = length2;
+            _length3 = length3;
+            _byteStride2 = new IntPtr(_length3).Multiply(Unsafe.SizeOf<T>());
+            _byteStride1 = _byteStride2.Multiply(_length2);
+            _byteStride0 = _byteStride1.Multiply(_length1);
+        }
         public ref T this[int index0, int index1, int index2, int index3]
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -391,7 +439,7 @@ namespace DotNetCross.Memory.Views
         }
     }
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct View5D<T>
+    public readonly partial struct View5D<T>
     {
         readonly object _objectOrNull;
         readonly IntPtr _byteOffsetOrPointer;
@@ -503,6 +551,23 @@ namespace DotNetCross.Memory.Views
             _length2 = length2;
             _length3 = length3;
             _length4 = length4;
+        }
+        public unsafe View5D(void* pointer, int length0, int length1, int length2, int length3, int length4)
+        {
+            if (!ViewHelper.IsReferenceFree<T>())
+                ThrowHelper.ThrowArgumentException_InvalidTypeWithPointersNotSupported(typeof(T));
+
+            _objectOrNull = null;
+            _byteOffsetOrPointer = new IntPtr(pointer);
+            _length0 = length0;
+            _length1 = length1;
+            _length2 = length2;
+            _length3 = length3;
+            _length4 = length4;
+            _byteStride3 = new IntPtr(_length4).Multiply(Unsafe.SizeOf<T>());
+            _byteStride2 = _byteStride3.Multiply(_length3);
+            _byteStride1 = _byteStride2.Multiply(_length2);
+            _byteStride0 = _byteStride1.Multiply(_length1);
         }
         public ref T this[int index0, int index1, int index2, int index3, int index4]
         {
