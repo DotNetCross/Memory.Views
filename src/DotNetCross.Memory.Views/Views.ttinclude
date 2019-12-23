@@ -175,3 +175,35 @@
 <#+
     }
 #>
+<#+
+    void UnsafeAt(string indecesJoined, int dims)
+    {
+        var indecesCheck = Enumerable.Range(0, dims)
+            .Select(i => $"(uint)index{i} >= (uint)_length{i}").ToArray();
+        var indecesCheckJoined = string.Join(
+            $" ||{Environment.NewLine}                    ", indecesCheck);
+#>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T UnsafeAt(<#= indecesJoined #>)
+        {
+            return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
+                _byteOffsetOrPointer
+<#+
+        for (int dim = 0; dim < dims; ++dim)
+        {
+            if (dim < (dims - 1)) {
+#>
+                    .Add(_byteStride<#= dim #>.Multiply(index<#= dim #>))
+<#+
+            } else {
+#>
+                    .Add<T>(index<#= dim #>)
+<#+
+            }
+        }
+#>
+                    );
+        }
+<#+
+    }
+#>

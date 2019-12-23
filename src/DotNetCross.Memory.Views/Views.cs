@@ -113,6 +113,14 @@ namespace DotNetCross.Memory.Views
                     );
             }
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T UnsafeAt(int index0)
+        {
+            return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
+                _byteOffsetOrPointer
+                    .Add<T>(index0)
+                    );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref T GetPinnableReference()
@@ -259,6 +267,15 @@ namespace DotNetCross.Memory.Views
                         .Add<T>(index1)
                     );
             }
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T UnsafeAt(int index0, int index1)
+        {
+            return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
+                _byteOffsetOrPointer
+                    .Add(_byteStride0.Multiply(index0))
+                    .Add<T>(index1)
+                    );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -431,6 +448,16 @@ namespace DotNetCross.Memory.Views
                         .Add<T>(index2)
                     );
             }
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T UnsafeAt(int index0, int index1, int index2)
+        {
+            return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
+                _byteOffsetOrPointer
+                    .Add(_byteStride0.Multiply(index0))
+                    .Add(_byteStride1.Multiply(index1))
+                    .Add<T>(index2)
+                    );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -628,6 +655,17 @@ namespace DotNetCross.Memory.Views
                         .Add<T>(index3)
                     );
             }
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T UnsafeAt(int index0, int index1, int index2, int index3)
+        {
+            return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
+                _byteOffsetOrPointer
+                    .Add(_byteStride0.Multiply(index0))
+                    .Add(_byteStride1.Multiply(index1))
+                    .Add(_byteStride2.Multiply(index2))
+                    .Add<T>(index3)
+                    );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -850,6 +888,18 @@ namespace DotNetCross.Memory.Views
                         .Add<T>(index4)
                     );
             }
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ref T UnsafeAt(int index0, int index1, int index2, int index3, int index4)
+        {
+            return ref Unsafe.RefAtByteOffset<T>(_objectOrNull,
+                _byteOffsetOrPointer
+                    .Add(_byteStride0.Multiply(index0))
+                    .Add(_byteStride1.Multiply(index1))
+                    .Add(_byteStride2.Multiply(index2))
+                    .Add(_byteStride3.Multiply(index3))
+                    .Add<T>(index4)
+                    );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

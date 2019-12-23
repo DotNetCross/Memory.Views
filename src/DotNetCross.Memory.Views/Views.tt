@@ -150,6 +150,7 @@ namespace DotNetCross.Memory.Views
 
 <#
         Indexer(indecesJoined, dims);
+        UnsafeAt(indecesJoined, dims);
 #>
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
